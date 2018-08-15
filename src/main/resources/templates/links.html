@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>友情链接</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" /> 
+<meta name="description" content="帅大叔的博客,这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" /> 
+<meta name="_ctx" th:content="@{/}" />
+<link rel="shortcut icon" type="image/x-icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+<link href="../static/fontawesome/css/font-awesome.min.css" th:href="@{/fontawesome/css/font-awesome.min.css}"  rel="stylesheet">
+<link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+<link href="../static/modal/css/modal.min.css" th:href="@{/modal/css/modal.min.css}" rel="stylesheet">
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<script src="/modal/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+	.fh5co-narrow-content{
+		color: #fff;
+	}
+	.main{
+		border-left: 1px dashed #fff;
+		min-height: 500px;
+		width: 100%;
+		margin-top: 20px;
+	}
+	.main div.text-center{
+		padding: 0px 10px;
+	} 
+	.main div.text-center p{
+		font-size: 1.2em;
+	}
+	.main .alert{
+		margin: 0px 20px 20px 20px;
+	}
+	.main .row{
+		margin: 10px 20px;
+	}
+	.main .row .col-md-2{
+		background: #444;
+		margin-bottom: 20px;
+		padding: 5px;
+		text-align: center;
+	}
+	.main .row .col-md-2 a{
+		color: #fff;
+		display: block;
+	}
+	@media screen and (min-width: 0px) and (max-width: 768px){
+		.care{
+			font-size: 10px;
+		}
+		h3{
+			font-size: 20px;
+		}
+	}
+</style>
+</head>
+<body>
+<div id="fh5co-page">
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+		<div th:replace="include/left :: blog-left"></div>
+
+		<div id="fh5co-main">
+			<div class="fh5co-narrow-content">
+				<h2 style="display: inline;padding-right: 20px;">友情链接 </h2> <small>青春在走，时光在老，友谊在长久..............</small>
+				<div class="main">
+				<!-- 
+					<div class="alert alert-warning alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert"
+			                    aria-hidden="true">
+			                &times;
+			            </button>
+						<h3 class="care">一、拒绝商业性链接，比如公司，宣传类的链接</h3>
+						<h3 class="care">二、欢迎各位来客交换友情链接</h3>
+						<h3 class="care">三、如下有个自助申请，若你已添加本站的链接</h3>
+						<h3 class="care">四、申请3分钟内将添加你的友链</h3>
+						<h3 class="care">五、还等什么下方提交你的博客信息</h3>
+						<h3 class="care">六、 提交你的友链之前，请先添加我的链接。</h3>
+						<h3 class="care">七、 提交你的友链之前，请先添加我的链接。</h3>
+						<h3 class="care">八、 提交你的友链之前，请先添加我的链接。</h3>
+					</div>
+				 -->
+					<div class="alert alert-info">
+						<table class="table table-striped">
+						  <h3><i class="fa fa-link"></i> 我的网站信息</h3>
+						  <thead>
+						  </thead>
+						  <tbody>
+						    <tr>
+						      <th class="text-center">网站名称:</th>
+						      <td>这个冬天不太冷</td>
+						    </tr>
+						    <tr>
+						      <th class="text-center">网站地址:</th>
+						      <td>http://www.lrshuai.top</td>
+						    </tr>
+						    <tr>
+						      <th class="text-center">网站描述:</th>
+						      <td>一个很帅很帅的大叔写的技术干货文章</td>
+						    </tr>
+						  </tbody>
+						</table>
+					</div>
+					<div class="alert alert-success" >
+						<h3><i class="fa fa-exchange"></i> 友链互换申请</h3>
+						<form class="form-horizontal" role="form">
+						  <div class="form-group">
+						    <label for="link_name" class="col-sm-2 control-label">你的网站名称</label>
+						    <div class="col-sm-10">
+						      <input type="text" class="form-control" id="link_name" placeholder="你的网站名称，如：这个冬天不太冷">
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="link" class="col-sm-2 control-label">你的网站地址</label>
+						    <div class="col-sm-10">
+						      <input type="text" class="form-control" id="link" placeholder="你的网站地址，如：http://www.lrshuai.top">
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="link_desc" class="col-sm-2 control-label">你的网站描述</label>
+						    <div class="col-sm-10">
+						      <input type="text" class="form-control" id="link_desc" placeholder="你的网站描述，如：一个很帅很帅的大叔写的技术干货文章">
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <div class="col-sm-offset-2 col-sm-10">
+						      <button type="submit" id="addLinks" class="btn btn-default">提交申请</button>
+						    </div>
+						  </div>
+						</form>
+					</div>
+					<div class="row" >
+						<div th:each="url,lstat:${links}">
+							<div class="col-md-2"  th:title="${url.description}" th:if="${lstat.index}%4 == 0"  title="一个人，信你所信，为你所现" data-toggle="tooltip">
+								<strong th:text="${url.link_name}">这个冬天不太冷</strong>
+								<a href="http://www.lrshuai.top" th:href="${url.link}" th:text="${url.link}" target="_blank" data-toggle="tooltip" >http://www.lrshuai.top</a>
+							</div>
+							
+							<div class="col-md-2 col-md-offset-1" th:title="${url.description}" th:unless="${lstat.index}%4==0"  title="一个人，信你所信，为你所现" data-toggle="tooltip">
+								<strong th:text="${url.link_name}">这个冬天不太冷</strong>
+								<a href="http://www.lrshuai.top" th:href="${url.link}" th:text="${url.link}" target="_blank" data-toggle="tooltip" >http://www.lrshuai.top</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+
+<div class="modal fade" id="myWechatCode" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title text-center" style="color: #000;">微信二维码</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row" >
+					<div class="col-sm-8 col-sm-offset-2">
+						<img width="100%;" src="../static/images/twocode.jpg" th:src="@{/images/twocode.jpg}">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>	
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/modal/jquery.waypoints.min.js" th:src="@{/modal/jquery.waypoints.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/js/links.js" th:src="@{/js/links.js}"></script>
+</body>
+</html>

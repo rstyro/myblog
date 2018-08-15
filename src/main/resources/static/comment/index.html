@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>评论插件</title>
+<link href="./css/font-awesome.min.css"  rel="stylesheet">
+<link rel="stylesheet"  href="./css/emoji.css">
+<style>
+	*{
+		margin: 0px;
+		padding: 0px;
+		font-family: Microsoft YaHei SimSun;
+	}
+	body{
+		color: #333;
+	}
+	a{
+		text-decoration: none;
+	}
+	.comment-container{
+		max-width: 1000px;
+		margin: 50px auto;
+		padding: 0px 10px;
+	}
+	.commentbox{
+		width: 100%;
+		padding-top: 5px;
+	}
+	
+	.myinput-group{
+		display: inline;
+		clear: both;
+	}
+	.myinput-group>label{
+		display:inline-block;
+		padding:5px 20px;
+		font-size: 1.1em;
+		background-color: #009688;
+		color: #fff;
+	}
+	.myinput-group>input{
+		outline: none;
+		width: 200px;
+		height:20px;
+		font-size: 1.1em;
+		padding: 5px 10px;
+		vertical-align:top;
+	}
+	
+	.commentbox>textarea{
+		overflow: auto;
+		word-break: break-all;
+		width: 98%;
+		height: 100px;
+		resize: none;
+		outline:none;
+		border:1px solid #ccc;
+		border-radius: 5px;
+		background-color: #FCFCFC;
+		padding: 10px;
+	}
+	.commentbox>.send-box{
+		clear:both;
+		width: 100%;
+		height: 50px;
+	}
+	.commentbox>.send-box>a>i{
+		font-size: 2em;
+		color: #ccc;
+	}
+	.commentbox>.send-box>a>i:HOVER{
+		color: #3dfd0f;
+	}
+	.commentbox>.send-box>a.btn-send{
+		width: 60px;
+		height:35px;
+		line-height:33px;
+		text-align: center;
+		float: right;
+		background-color: #5DC0DF;
+		border-radius: 5px;
+		color: #fff;
+	}
+	.comment-list{
+		width: 100%;
+	}
+	.comment-list>.comment-list-box{
+		clear: both;
+		padding-bottom:20px;
+		margin-bottom:20px;
+		border-bottom: 1px solid #eee;
+	}
+	
+	.comment-list>.comment-list-box>header{
+		position: relative;
+		width: 100%;
+		height: 50px;
+	}
+	.comment-list>.comment-list-box>header>.author-head{
+		width: 5%;
+		position: absolute;
+	}
+	.comment-list>.comment-list-box>header>.author-head img{
+		width: 100%;
+		border-radius: 50%;
+	}
+	.comment-list>.comment-list-box>header>.author-info{
+		padding-left:6%;
+	}
+	.comment-list>.comment-list-box>header>.author-info>a{
+		text-decoration: none;
+		color: #333;
+	}
+	.comment-list>.comment-list-box>header>.author-info>.authore-info-footer span{
+		display: inline-block;
+		margin-right: 10px;
+		color: #969696;
+	}
+	.comment-list>.comment-list-box>p.content{
+		padding:0.3em 0px 1em 0px; 
+	}
+	.comment-list>.comment-list-box>footer{
+		background-color: #fffffd;
+		padding: 5px 0px;
+	}
+	.comment-list>.comment-list-box>footer>span{
+		color: #969696;
+		display: inline-block;
+		margin-right: 10px;
+	}
+	.comment-list>.comment-list-box>footer>span:HOVER{
+		color: #222;
+	}
+	.comment-list>.comment-list-box>footer>span>i.fa-globe{
+		color: green;
+	}
+	.comment-list>.comment-list-box>footer>span>i.fa-desktop{
+		color: #111;
+	}
+	.comment-list>.comment-list-box>footer>a{
+		text-decoration: none;
+		color: #969696;
+		display: inline-block;
+		margin-right: 10px;
+		float: right;
+	}
+	i{
+		padding-right: 5px;
+	}
+	.comment-list>.comment-list-box>footer>a:HOVER>i.fa-thumbs-o-up{
+		color: red;
+	}
+	.comment-list>.comment-list-box>footer>a:HOVER>i.fa-mail-reply,.comment-list>.comment-list-box>footer>a:HOVER>span{
+		color: #222;
+	}
+	.comment-list>.comment-list-box>.child-comment-list{
+		border-left: 3px solid #ccc;
+		padding-left: 5px;
+		margin-top: 0.5em;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment{
+		border-bottom: 1px dashed #ccc;
+		padding-bottom: 10px;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>p{
+		padding: 0px 0px 0.5em 0px;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>p>a{
+		text-decoration: none;
+		color: #3194D0;
+		padding: 0px 5px 0px 0px;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>footer{
+		color: #969696;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>footer>span{
+		display: inline-block;
+		margin-right: 10px;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>footer>a{
+		text-decoration: none;
+		color: #969696;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>footer>a:HOVER{
+		color: #222;
+	}
+	.red{
+		color: red;
+	}
+</style>
+</head>
+<body>
+
+<div class="comment-container">
+	<div class="myinput-group">
+		<label>昵称:</label><input type="text" name="nick_name" value="帅大叔"/>
+		<label>邮箱:</label><input type="text" name="email" value="1006059906@qq.com"/>
+	</div>
+	<div class="commentbox">
+		<textarea cols="80" rows="50" placeholder="来说几句吧......" class="mytextarea" id="content"></textarea>
+		<div class="send-box">
+			<a href="#" class="smile"><i class="fa fa-smile-o"></i></a>
+			<a href="#" class="btn-send" uid="1">发送</a>
+		</div>
+	</div>
+	<div class="comment-list">
+	
+		<div class="comment-list-box" comment_id="1">
+			<header>
+				<div class="author-head"><img src="./images/user1.png" /></div>
+				<div class="author-info">
+					<a href="javascript:void(0)">帅大叔</a>
+					<div class="authore-info-footer">
+						<span>1楼</span>
+						<span>2017-12-20 09:55:10</span>
+						<span><i class="fa fa-map-marker"></i>深圳市福田</span>
+					</div>
+				</div>
+			</header>
+			<p class="content">人生并不像火车要通过每个站似的经过每一个生活阶段。人生总是直向前行走，从不留下什么..............青春在走，时光在老，友谊在长久..............不知从什么时候，开始不爱说话，沉默代替了所有回答..............</p>
+			<footer>
+				<span><i class="fa fa-desktop"></i>Win8.1</span>
+				<span><i class="fa fa-globe"></i>chrome 62.0.3202.94</span>
+				<a href="javascript:void(0)" class="reply_floor_host" uid="1"><i class="fa fa-mail-reply"></i><span>回复</span></a>
+				<a href="javascript:void(0)" class="praise_comment"><i class="fa fa-thumbs-o-up"></i><span>66人点赞</span></a>
+			</footer>
+			<div class="child-comment-list">
+				<div class="child-comment">
+					<p><a href="javascript:void(0)">女神</a>:<a href="javascript:void(0)">@帅大叔</a>不是除了你，我就没人要了。只是除了你，我谁都不想要</p>
+					<footer>
+						<span>2017-12-20 12:00:00</span>
+						<a href="javascript:void(0)" class="reply_floor_child" uid="2"><i class="fa fa-mail-reply"></i><span>回复</span></a>
+					</footer>
+				</div>
+				
+			<!-- 回复框 -->
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+<script src="./js/jquery.min.js" ></script>
+<script src="./js/jquery.emoji.js" ></script>
+<script>
+	var userName="坏大叔";
+	var replyUserName="帅大叔";
+	var tableId="1";
+	var address="深圳市福田区";
+	var browse_version="chrome 62.0.3202.94";
+	var os_name="win8.1";
+	var replyName="";
+	var floorNum = 1;
+	
+	var arr=[
+      {
+        "userPath": "./images/user2.png",
+        "create_time": "2017-12-21 10:00:00",
+        "reply_user_id": "",
+        "replyUserName": "",
+        "replybody": [
+          {
+            "img": "imgpath",
+            "create_time": "2017-12-21 10:10:00",
+            "reply_user_id": 85,
+            "replyUserName": "别问我",
+            "table_id": 1,
+            "comment_id": 13,
+            "content": "我这是回复体里面的内容了！！！！！！！！",
+            "praise_flag": 0,
+            "user_id": 82,
+            "parent_id": 10,
+            "praise_num": 0,
+            "table_type": "information",
+            "userName": "rstyro"
+          }
+        ],
+        "table_id": 1,
+        "comment_id": 10,
+        "content": "好饿啊！！！！！！",
+        "praise_flag": 1,
+        "user_id": 85,
+        "parent_id": "",
+        "praise_num": 1,
+        "table_type": "information",
+        "userName": "别问我"
+      },
+      {
+        "userPath": "./images/user3.png",
+        "create_time": "2017-12-21 00:00:00",
+        "reply_user_id": "",
+        "replyUserName": "",
+        "replybody": [],
+        "table_id": 1,
+        "comment_id": 8,
+        "content": "你吃了吗?",
+        "praise_flag": 0,
+        "user_id": 71,
+        "parent_id": "",
+        "praise_num": 0,
+        "table_type": "information",
+        "userName": "断罪小学赵日天"
+      }
+    ];
+	
+	$(function(){
+		$(".smile").emoji();
+		
+		//回复楼主
+		$(".reply_floor_host").click(function(){
+			userName = $("[name='nick_name']").val();
+			replyListen($(this),"parent");
+		});
+		
+		//回复 楼主中的评论
+		$(".reply_floor_child").click(function(){
+			userName = $("[name='nick_name']").val();
+			replyListen($(this),"child");
+		});
+		
+		//发送按钮
+		$(".btn-send").click(function(){
+			var parentEL = $(this).parent().parent();
+			var content = parentEL.find("textarea").first().val();
+			parentEL.find("textarea").first().val("");
+			userName = $("[name='nick_name']").val();
+			var replyuid = $(this).attr("uid");
+			var obj = CommentBody("","0",tableId,"",userName,"./images/user1.png",content,replyuid,replyUserName,0,address,browse_version,os_name,getNowDateFormat());
+			addComment(obj);
+		});
+		
+		//点赞
+		$(".praise_comment").click(function(){
+			pariseAction($(this));
+		})
+		for(var i=0;i<arr.length;i++){
+			addComment(arr[i]);
+		}
+		
+	})
+	
+	//点赞操作
+	function pariseAction(el){
+		el.find("i").removeClass("fa-thumbs-o-up");
+		el.find("i").addClass("fa-thumbs-up");
+		el.find("i").css("color","red");
+		var number = parseInt(el.find("span").text());
+		el.find("span").text(++number+"人点赞");
+	}
+	
+	//添加 回复框
+	function addReplybox(parentEL,obj){
+		if(replyName == ""){
+			replyName = obj.replyUserName;
+			textareaBoxListen(parentEL,obj);
+		}else if(replyName != obj.replyUserName){
+			replyName = obj.replyUserName;
+			if(parentEL.find(".commentbox").length > 0){
+				parentEL.find(".commentbox>textarea").val("@"+obj.replyUserName+" ");
+			}else{
+				textareaBoxListen(parentEL,obj);
+			}
+		}else{
+			if(parentEL.find(".commentbox").length > 0){
+				parentEL.find(".commentbox").remove();
+			}else{
+				textareaBoxListen(parentEL,obj);
+			}
+		}
+	}
+	
+	//添加 回复内容
+	function addReply(obj,parentEL){
+		var replyStr = createReplyHtml(obj);
+		if(parentEL.find(".commentbox").length > 0){
+			parentEL.find(".commentbox").remove();
+		}
+		parentEL.find(".child-comment-list").append(replyStr);
+	}
+	
+	//添加 评论
+	function addComment(obj){
+		var node = createCommentListBox(obj,floorNum);
+		floorNum++;
+		var nodeEL = $(node);
+		nodeEL.find(".praise_comment").click(function(){
+			pariseAction($(this));
+		});
+		nodeEL.find(".reply_floor_host").click(function(){
+			replyListen($(this),"parent");
+		});
+		nodeEL.find(".reply_floor_child").click(function(){
+			replyListen($(this),"child");
+		});
+		$(".comment-list").append(nodeEL);
+	}
+	
+	//回复体的 点击回复监听
+	function replyListen(el,isParent){
+		var newreplyName = el.parent().parent().find("a").first().text();
+		var replyuid = el.attr("uid");
+		var parentEL ="";
+		if(isParent == "child"){
+			parentEL = el.parent().parent().parent().parent();
+		}else{
+			parentEL = el.parent().parent();
+		}
+		var reply = replyCommentBody(replyuid,userName,newreplyName,"",getNowDateFormat());
+		addReplybox(parentEL,reply);
+	}
+	
+	//回复框的 发送按钮监听
+	function textareaBoxListen(parentEL,obj){
+		var parent_id = parentEL.attr("comment_id");
+		parentEL.find(".child-comment-list").append(createTextareaBox(obj));
+		parentEL.find(".smile-reply").emoji({content_el:"#reply-content"});
+		parentEL.find(".commentbox>.send-box>.btn-send").click(function(){
+			var content = $(this).parent().prev().val();
+			//移除前面的 @名字
+			obj.content = content.replace(content.split(" ",1),"");
+			addReply(obj,parentEL);
+		});
+	}
+	
+	//创建 回复框
+	function createTextareaBox(reply){
+		var str = "<div class='commentbox'>";
+		str = str+"<textarea cols='80' rows='50' placeholder='来说几句吧......' class='mytextarea' id='reply-content'>@"+reply.replyUserName+" </textarea>";
+		str = str+"<div class='send-box'>";
+		str = str+"<a href='javascript:void(0)' class='smile-reply'><i class='fa fa-smile-o'></i></a>";
+		str = str+"<a href='javascript:void(0)' class='btn-send'>回复</a>";
+		str = str+"</div></div>";
+		return str;
+	}
+	
+	
+	//创建 评论内容
+	function createCommentListBox(obj,floorNum){
+		/*
+		<div class="comment-list-box" comment_id="1">
+			<header>
+				<div class="author-head"><img src="./images/user1.png" /></div>
+				<div class="author-info">
+					<a href="javascript:void(0)">帅大叔</a>
+					<div class="authore-info-footer">
+						<span>1楼</span>
+						<span>2017-12-20 09:55:10</span>
+						<span><i class="fa fa-map-marker"></i>深圳市福田</span>
+					</div>
+				</div>
+			</header>
+			<p class="content">人生并不像火车要通过每个站似的经过每一个生活阶段。人生总是直向前行走，从不留下什么..............青春在走，时光在老，友谊在长久..............不知从什么时候，开始不爱说话，沉默代替了所有回答..............</p>
+			<footer>
+				<span><i class="fa fa-desktop"></i>Win8.1</span>
+				<span><i class="fa fa-globe"></i>chrome 62.0.3202.94</span>
+				<a href="javascript:void(0)" class="reply_floor_host" uid="1"><i class="fa fa-mail-reply"></i><span>回复</span></a>
+				<a href="javascript:void(0)" class="praise_comment" ><i class="fa fa-thumbs-o-up"></i><span>66人点赞</span></a>
+			</footer>
+			<div class="child-comment-list">
+				<div class="child-comment">
+					<p><a href="javascript:void(0)">女神</a>:<a href="javascript:void(0)">@帅大叔</a>不是除了你，我就没人要了。只是除了你，我谁都不想要</p>
+					<footer>
+						<span>2017-12-20 12:00:00</span>
+						<a href="javascript:void(0)" class="reply_floor_child" uid="2"><i class="fa fa-mail-reply"></i><span>回复</span></a>
+					</footer>
+				</div>
+				
+			<!-- 回复框 -->
+			</div>
+		</div>
+		*/
+		var content = replace_em(obj.content);
+		var commentstr = "<div class='comment-list-box' comment_id='"+obj.comment_id+"'>";
+			commentstr = commentstr + "<header>";
+			commentstr = commentstr + "<div class='author-head'><img src='"+obj.userPath+"' /></div>";
+			commentstr = commentstr + "<div class='author-info'>";
+			commentstr = commentstr + "<a href='javascript:void(0)'>"+obj.userName+"</a>";
+			commentstr = commentstr + "<div class='authore-info-footer'>";
+			commentstr = commentstr + "<span>"+floorNum+"楼</span><span>"+obj.create_time+"</span>";
+			if(obj.address != "" && typeof(obj.address) != "undefined"){
+				commentstr = commentstr + "<span><i class='fa fa-map-marker'></i>"+obj.address+"</span>";
+			}
+			commentstr = commentstr + "</div></div></header>";
+			commentstr = commentstr + "<p class='content'>"+content+"</p>";
+			commentstr = commentstr + "<footer>";
+			if(obj.os_name != "" && typeof(obj.os_name) != "undefined"){
+				commentstr = commentstr + "<span><i class='fa fa-desktop'></i>"+obj.os_name+"</span>";
+			}
+			if(obj.browse_version != "" && typeof(obj.browse_version) != "undefined"){
+				commentstr = commentstr + "<span><i class='fa fa-globe'></i>"+obj.browse_version+"</span>";
+			}
+			commentstr = commentstr + "<a href='javascript:void(0)' class='reply_floor_host' uid='"+obj.reply_user_id+"'><i class='fa fa-mail-reply'></i><span>回复</span></a>";
+			commentstr = commentstr + "<a href='javascript:void(0)' class='praise_comment'><i class='fa "+((obj.praise_flag == 1)?"fa-thumbs-up red":"fa-thumbs-o-up")+"'></i><span>"+obj.praise_num+"人点赞</span></a>";
+			commentstr = commentstr + "</footer>";
+			commentstr = commentstr + "<div class='child-comment-list'>";
+			if(typeof(obj.replybody) != "undefined" && obj.replybody.length > 0){
+				for(var i=0;i<obj.replybody.length;i++){
+					var reply = obj.replybody[i];
+					var replyELstr = createReplyHtml(reply);
+					commentstr = commentstr + replyELstr;
+				}
+			}
+			commentstr = commentstr + "</div></div>";
+			return commentstr;
+	}
+	
+	
+	//创建 回复评论体
+	function createReplyHtml(obj){
+		var content = replace_em(obj.content);
+		var replyStr = "<div class='child-comment'>";
+			replyStr = replyStr+"<p><a href='javascript:void(0)'>"+obj.userName+"</a>:<a href='javascript:void(0)'>"+obj.replyUserName+"</a>"+content+"</p>";
+			replyStr = replyStr+"<footer>";
+			replyStr = replyStr+"<span>"+obj.create_time+"</span>";
+			replyStr = replyStr+"<a href='javascript:void(0)' class='reply_floor_child' uid='"+obj.user_id+"'><i class='fa fa-mail-reply'></i><span>回复</span></a>";
+			replyStr = replyStr+"</footer></div>";
+		return replyStr;
+	}
+	
+	//评论的对象体
+	function CommentBody(comment_id,parent_id,table_id,user_id,userName,userPath,content,reply_user_id,replyUserName,praise_num,address,browse_version,os_name,create_time){
+		var obj = new Object();
+		obj.comment_id=comment_id;
+		obj.parent_id=parent_id;
+		obj.table_id=table_id;
+		obj.user_id=user_id;
+		obj.userName=userName;
+		obj.userPath=userPath;
+		obj.replyUserName=replyUserName;
+		obj.content=content;
+		obj.reply_user_id=reply_user_id;
+		obj.praise_num=praise_num;
+		obj.address=address;
+		obj.browse_version=browse_version;
+		obj.os_name=os_name;
+		obj.create_time=create_time;
+		return obj;
+	}
+	
+	//回复对象体
+	function replyCommentBody(user_id,userName,replyUserName,content,create_time){
+		var obj = new Object();
+		obj.user_id=user_id;
+		obj.userName=userName;
+		obj.replyUserName=replyUserName;
+		obj.content=content;
+		obj.create_time=create_time;
+		return obj;
+	}
+	
+	//获取当前时间
+	function getNowDateFormat(){
+		var nowDate = new Date();
+		var year = nowDate.getFullYear();
+		var month = filterNum(nowDate.getMonth()+1);
+		var day = filterNum(nowDate.getDate());
+		var hours = filterNum(nowDate.getHours());
+		var min = filterNum(nowDate.getMinutes());
+		var seconds = filterNum(nowDate.getSeconds());
+		return year+"-"+month+"-"+day+" "+hours+":"+min+":"+seconds;
+	}
+	function filterNum(num){
+		if(num < 10){
+			return "0"+num;
+		}else{
+			return num;
+		}
+	}
+	//表情格式替换
+	function replace_em(str){
+		//转义
+		str = $('<span/>').text(str).html();
+		str = str.replace(/\</g,'&lt;');
+		str = str.replace(/\>/g,'&gt;');
+		str = str.replace(/\n/g,'<br/>');
+		str = str.replace(/\[qq_([0-9]*)\]/g,"<img src='./face/emoji1/$1.gif' />");
+		str = str.replace(/\[em_([0-9]*)\]/g,"<img src='./face/emoji2/$1.png'  />");
+		str = str.replace(/\[other_([0-9]*)\]/g,"<img src='./face/emoji3/$1.jpg' />");
+		return str;
+	
+	}
+	
+</script>
+</body>
+</html>

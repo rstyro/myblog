@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta name="_ctx" th:content="@{/}" />
+  <title>黑名单自助解除</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+ <style>
+	body{
+		background-color: #000;
+		color: #fff;
+		padding: 0;
+		margin: 0;
+	}
+	.fourTofour{
+		margin: 0px auto;
+		font-size: 2em;
+		text-align: center;
+	}
+	.fourTofour img{
+	}
+	.fourTofour input{
+		height: 42px;
+		width: 300px;
+	}
+	.fourTofour button{
+		background-color: #5bc0de;
+		color: #fff;
+		width: 5em;
+		font-size:1.5em;
+		margin: 20px auto;
+		cursor: pointer;
+	}
+	
+</style>
+</head>
+<body>
+	<div class="fourTofour">
+		<h2>系统检测到你的ip访问异常，已添加黑名单列表，若误操作,可填写下方验证码，进行解除。</h2>
+		<h4>每个黑名单只有一次解除的机会，如果下次再进入黑名单将无法自助解除</h4>
+		<div><img id="authCode" src="" alt="验证码" title="点击更换" /><br><input type="text" id="auth_code" name="auth_code" value="" placeholder="输入验证码,或者算法所得的结果"></div>
+		<button id="applyRmBlackList">申请解除</button>
+	</div>
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/js/auth.min.js" th:src="@{/js/auth.min.js}"></script>
+</body>
+</html>

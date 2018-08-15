@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>机器人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" /> 
+<meta name="description" content="帅大叔的博客,这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" /> 
+<meta name="_ctx" th:content="@{/}" />
+<link rel="shortcut icon" type="image/x-icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+<link href="../static/fontawesome/css/font-awesome.min.css" th:href="@{/fontawesome/css/font-awesome.min.css}"  rel="stylesheet">
+<link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+<link href="../static/modal/css/modal.min.css" th:href="@{/modal/css/modal.css}" rel="stylesheet">
+<link href="../css/robot.min.css" th:href="@{/css/robot.min.css}" rel="stylesheet">
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<script src="/modal/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+</style>
+</head>
+<body>
+<div id="fh5co-page">
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+		<div th:replace="include/left :: blog-left"></div>
+		<div id="fh5co-main">
+			<div class="fh5co-narrow-content">
+				<input type="hidden" id="user_id" value="0" th:if="${not #lists.isEmpty(session.SESSION_USER)}" th:value="${session.SESSION_USER.user_id}" />
+				<input type="hidden" id="user_id" value="0" th:if="${#lists.isEmpty(session.SESSION_USER)}" />
+				<input type="hidden" id="auth_robot" value="0" th:if="${not #lists.isEmpty(session.SESSION_USER)}" th:value="${session.SESSION_USER.auth_robot}" />
+				<input type="hidden" id="auth_robot" value="0" th:if="${#lists.isEmpty(session.SESSION_USER)}" />
+				<input type="hidden" id="user_path" value="/images/niming.png" th:if="${not #lists.isEmpty(session.SESSION_USER)}" th:value="${session.SESSION_USER.img}" />
+				<input type="hidden" id="user_path" value="/images/niming.png" th:if="${#lists.isEmpty(session.SESSION_USER)}" />
+				<h2 style="display: inline;padding-right: 20px;">机器人</h2> <small>你虽然走了，但回忆依然留在这里...</small>
+				<div class="main">
+					<div class="rebot-box">
+						<header><span><i class="fa fa-slideshare"></i><em>V 0.0.1</em></span><div class="right"><span id="normalModel" class="active"><i class="fa fa-smile-o"></i> 普通模式</span><span id="learnModel"><i class="fa fa-connectdevelop"></i> 学习模式</span><span id="flirtModel"><i class="fa fa-heartbeat"></i> 污力班车</span></div></header>
+						<div class="chat-body" id="chatBody">
+						<!-- 
+							<div class="info info-left">
+								<div class="info-header"><img src="/images/rebotImg/man2.jpg"/></div>
+								<span class="info-body"><span class="content"><em></em> 你好呀</span></span>
+							</div>
+						 -->
+						</div>
+						<footer>
+							<textarea rows="80" cols="50" id="chat-content" placeholder="要和我聊什么呢....."></textarea>
+							<div class="btn-send" id="sendBtn">发送</div>
+						</footer>
+					</div>
+					<div class="robot-desc">
+						
+					</div>
+				</div>
+			</div>
+		
+		</div>
+</div>
+
+<!-- 微信二维码 -->
+<div class="modal fade" id="myWechatCode" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title text-center" style="color: #000;">微信二维码</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row" >
+					<div class="col-sm-8 col-sm-offset-2">
+						<img width="100%;" src="../static/images/twocode.jpg" th:src="@{/images/twocode.jpg}">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 提升大脑 -->
+<div class="modal fade" id="updateBrain" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title text-center" style="color: #000;">升级大脑</h3>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+				  <div class="form-group">
+				    <label for="firstname" class="col-sm-2 control-label">问题</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="question" placeholder="请输入问答">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="lastname" class="col-sm-2 control-label">回答</label>
+				    <div class="col-sm-10">
+				      <input type="text" class="form-control" id="answer" placeholder="请输入相应的答案">
+				    </div>
+				  </div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="submitQuestion">更新</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/modal/jquery.waypoints.min.js" th:src="@{/modal/jquery.waypoints.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/js/robot.min.js" th:src="@{/js/robot.min.js}"></script>
+<script>
+	$(function(){
+		setTimeout(function(){
+			addNode(robotImg,"我最近偷懒了，都没有学新东西，可能有点傻傻的呢，不许骂我，因为我傻得可爱，等有空的时候再去学东西，最近好忙的","info-left");
+		},2000);
+	})
+</script>
+</body>
+</html>

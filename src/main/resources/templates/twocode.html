@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>生成二维码</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" />
+<meta name="description"
+	content="帅大叔的博客,这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" />
+<meta name="_ctx" th:content="@{/}" />
+<link rel="shortcut icon" type="image/x-icon"
+	href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+<link href="../static/fontawesome/css/font-awesome.min.css"
+	th:href="@{/fontawesome/css/font-awesome.min.css}" rel="stylesheet">
+<link href="../static/bootstrap/css/bootstrap.css"
+	th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+<link href="../static/modal/css/modal.min.css"
+	th:href="@{/modal/css/modal.css}" rel="stylesheet">
+<link href="../static/css/emoji.min.css" rel="stylesheet"
+	th:href="@{/css/emoji.min.css}">
+<link href="../static/css/blog.core.min.css" rel="stylesheet"
+	th:href="@{/css/blog.core.css}">
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<script src="/modal/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+</style>
+</head>
+<body>
+	<div id="fh5co-page">
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+		<div th:replace="include/left :: blog-left"></div>
+
+		<div id="fh5co-main">
+			<div class="fh5co-narrow-content">
+				<h2 style="display: inline; padding-right: 20px;">生成二维码</h2>
+				<small>新年有没有想对某个人说一些话，但又有不好意思说..............</small>
+				<div id="lrs-blog-main">
+					<div id="lrs-blog-main-left">
+						<div class="left-box">
+							<div style="padding-right: 10px;">
+								<div class="alert alert-info alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-hidden="true">&times;</button>
+									写下你想让某人知道的事
+								</div>
+								<div class="alert alert-info alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-hidden="true">&times;</button>
+									写给过去了的2017的自己
+								</div>
+								<div class="alert alert-info alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-hidden="true">&times;</button>
+									写给2018的自己
+								</div>
+								<div class="alert alert-info alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-hidden="true">&times;</button>
+									写下你的祝福语....
+								</div>
+							</div>
+
+							<div class="alert alert-success">
+								<h3>
+									<i class="fa fa-odnoklassniki"></i> 写下你想说的话
+								</h3>
+								<form class="form-horizontal" role="form">
+									<div class="form-group">
+										<label for="link_name" class="col-sm-1 control-label"></label>
+										<div class="col-sm-11">
+										<span>如果句子太长了，在手机是看不清楚的，所以记得用逗号(英文逗号 ,)隔开，分次数显示。</span>
+											<input type="text" class="form-control" id="qrcodecontent"
+												placeholder="不写的话，则是博主给大家的祝福语">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="col-sm-offset-1 col-sm-11">
+											<button type="submit" id="submit" class="btn btn-default">生成二维码</button>
+											<button type="button" id="download" class="btn btn-default">下载图片</button>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="col-sm-offset-1 col-sm-11">
+											<div id="qrcode"></div>
+										</div>
+									</div>
+									<div id="img"></div>
+								</form>
+							</div>
+
+						</div>
+
+					</div>
+					<div id="lrs-blog-main-right">
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-envira"></i><strong> 新年语录</strong>
+								</h3>
+							</div>
+							<div class="panel-body">
+								<p>
+									我知道祝福应该热闹， <br /> 言语应该配上舞蹈， <br /> 可是， <br /> 不善言辞的我， <br />
+									只能选择一句， <br /> 淡淡的问好， <br /> 静静的， <br /> 看着你们闹， <br /> 这样就很好。<br />
+								</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 微信二维码 -->
+	<div class="modal fade" id="myWechatCode" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h3 class="modal-title text-center" style="color: #000;">微信二维码</h3>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-8 col-sm-offset-2">
+							<img width="100%;" src="../static/images/twocode.jpg"
+								th:src="@{/images/twocode.jpg}">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+	<script src="../static/modal/jquery.waypoints.min.js"
+		th:src="@{/modal/jquery.waypoints.min.js}"></script>
+	<script src="../static/bootstrap/js/bootstrap.min.js"
+		th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+	<script src="../static/twocode/js/jquery.qrcode.min.js"
+		th:src="@{/twocode/js/jquery.qrcode.min.js}"></script>
+	<script>
+	var _ctx = $("meta[name='_ctx']").attr("content");
+	_ctx = _ctx.substr(0, _ctx.length - 1);
+		$(function() {
+			$(".left-box").css("min-height", ($(window).height() - 100) + "px");
+			$("#wechatCode").click(function() {
+				$("#myWechatCode").modal("show");
+			});
+
+			$("#submit").click(function() {
+				$.ajax({
+					type:"POST",
+				       url:_ctx+"/public/qrcode",
+				       data:{content:$("#qrcodecontent").val(),time:new Date().getTime()},
+				       dataType:"json",
+				       cache:false,
+				       success: function(data){
+				    	   $("#qrcode").empty();
+				    	   $("#img").empty();
+				      	 if("success" == data.status){
+				      		jQuery('#qrcode').qrcode({
+								render : "canvas",//canvas 与 table .table 兼容ie
+								text : utf16to8(data.data),
+								width : 300, //宽度
+								height : 300, //高度
+								typeNumber : -1,//计算模式
+								correctLevel : 2,//二维码纠错级别
+								background : "#ffffff",//背景颜色
+								foreground : "#000" //二维码颜色
+							});
+				      		$("#qrcode").hide();
+				      		var mycans=$('canvas')[0];   
+							var img=convertCanvasToImage(mycans);  
+							$('#img').append(img);
+							$("#img").append("<br><a href='"+data.data+"' >去生成的页面</a>")
+				      	 }else{
+				      		 $("#qrcode").html(data.msg);
+				      	 }
+				       }
+				})
+				
+				return false;
+			});
+			
+			$("#download").click(function(){
+				if($("#img>img").length < 1){
+					alert("你还没有生成二维码");
+				}else{
+					var img = $('#img > img').attr("src");
+					var alink = document.createElement("a");
+					alink.href = img;
+					alink.download = "qrcode.png";
+					alink.click();
+				}
+			});
+			
+			function convertCanvasToImage(canvas) {  
+			    var image = new Image();  
+			    image.src = canvas.toDataURL("image/png");  
+			    return image;  
+			}  
+
+			 
+		})
+
+		function utf16to8(str) {
+			var out, i, len, c;
+			out = "";
+			len = str.length;
+			for (i = 0; i < len; i++) {
+				c = str.charCodeAt(i);
+				if ((c >= 0x0001) && (c <= 0x007F)) {
+					out += str.charAt(i);
+				} else if (c > 0x07FF) {
+					out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+					out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+					out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+				} else {
+					out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+					out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+				}
+			}
+			return out;
+		};
+	</script>
+</body>
+</html>

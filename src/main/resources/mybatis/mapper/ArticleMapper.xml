@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lrshuai.blog.dao.ArticleDao" >
+	
+	<!-- 保存文章 -->
+	<insert id="saveArticle" parameterType="pm" useGeneratedKeys="true" keyProperty="id">
+		insert into blog_article(
+			<if test="user_id != null and user_id != ''">
+				user_id,
+			</if>
+			title,
+			content,
+			<if test="text != null and text != ''">
+				text,
+			</if>
+			create_time
+		)values(
+			<if test="user_id != null and user_id != ''">
+				#{user_id},
+			</if>
+			#{title},
+			#{content},
+			<if test="text != null and text != ''">
+				#{text},
+			</if>
+			#{create_time}
+		)
+	</insert>
+	
+	<!-- 更新文章 -->
+	<update id="updateArticle" parameterType="pm">
+		update blog_article
+			set 
+				title = #{title},
+				<if test="content != null and content != ''">
+				content = #{content},
+				</if>
+				<if test="text != null and text != ''">
+				text = #{text},
+				</if>
+				article_id = #{article_id}
+			where
+				article_id=#{article_id}	
+	</update>
+	
+	<!-- 更新文章hot_num -->
+	<update id="updateArticleHotNum" parameterType="list">
+		update blog_article
+			set 
+				hot_num = hot_num+1
+			where
+				article_id in
+			<foreach item="item" collection="list" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>	
+	</update>
+	
+	
+	<!-- 获取文章归档 -->
+	<select id="getArticleMonthNum" parameterType="pm" resultType="pm">
+		SELECT 
+			DATE_FORMAT(create_time,'%Y-%m') article_month,
+			count(article_id) as count
+		from 
+			blog_article 
+		WHERE
+			isdel=0
+		GROUP BY 
+			article_month
+	</select>
+	
+	<!-- 获取文章详情 -->
+	<select id="getArticleDetail" parameterType="pm" resultType="pm">
+		SELECT
+			a.article_id,
+			a.user_id,
+			a.title,
+			a.content,
+			a.text,
+			a.browse_num,
+			a.comment_num,
+			a.praise_num,
+			a.create_time,
+			b.name,
+			b.img
+			<if test="user_id != null and user_id != ''">
+				,c.praise_id is not null as praise_flag
+			</if>
+			<if test="user_id == null">
+				,0 as praise_flag
+			</if>
+		from 
+			blog_article a
+		LEFT JOIN
+			blog_user b
+		ON
+			a.user_id=b.user_id
+		<if test="user_id != null and user_id != null">
+			left join
+				blog_praise c
+			on
+				c.user_id=#{user_id} and c.table_id = a.article_id
+		</if>
+		where
+			a.article_id=#{article_id} and isdel=0
+	</select>
+	
+	
+	<!-- 获取文章列表 -->
+	<select id="getArticlelistPage" parameterType="page" resultType="pm">
+		SELECT
+			a.article_id,
+			a.user_id,
+			a.title,
+			a.content,
+			a.text,
+			a.browse_num,
+			a.comment_num,
+			a.praise_num,
+			a.create_time,
+			b.name,
+			b.img
+		from 
+			blog_article a
+		LEFT JOIN
+			blog_user b
+		ON
+			a.user_id=b.user_id
+		where
+			1=1
+			<if test="pm.article_month != null and pm.article_month != ''">
+				and DATE_FORMAT(a.create_time,"%Y-%m")=#{pm.article_month}
+			</if>
+			<if test="pm.keyword != null and pm.keyword != ''">
+				and (
+					a.content like CONCAT(CONCAT('%', #{pm.keyword}), '%')
+					or
+					a.text like CONCAT(CONCAT('%', #{pm.keyword}), '%')
+					or
+					a.title like CONCAT(CONCAT('%', #{pm.keyword}), '%')
+				)
+			</if>
+			<if test="pm.keywords != null">
+				and (
+				<foreach collection="pm.keywords" item="item" index="index" separator="or">
+			      a.text like '%${item}%' or a.title like '%${item}%'
+			   </foreach>
+				)
+			</if>
+			<if test="pm.user_id != null and pm.user_id != ''">
+				and a.user_id=#{pm.user_id}
+			</if>
+			and isdel=0
+		order by
+			a.create_time desc,a.update_time desc
+	</select>
+	
+	
+	<!-- 获取标签文章列表 -->
+	<select id="getLabelArticleList" parameterType="list"  resultType="pm">
+		SELECT
+			a.article_id,
+			a.user_id,
+			a.title,
+			a.content,
+			a.text,
+			a.browse_num,
+			a.comment_num,
+			a.praise_num,
+			a.create_time,
+			b.name,
+			b.img
+		from 
+			blog_article a
+		LEFT JOIN
+			blog_user b
+		ON
+			a.user_id=b.user_id
+		where
+			a.article_id in
+			<foreach item="item" collection="list" index="index" open="(" separator="," close=")">
+				#{item.article_id}
+			</foreach>
+			and isdel=0
+		order by
+			a.create_time desc,a.update_time desc
+	</select>
+	
+	<!-- 获取推荐文章 -->
+	<select id="getRecommendArticle" parameterType="pm"  resultType="pm">
+		SELECT 
+			article_id,
+			title,
+			(praise_num * 10)+browse_num as orderNum
+		FROM 
+			blog_article 
+		where 
+			isrecommend=1 and isdel=0
+		ORDER BY
+			orderNum desc,praise_num DESC,browse_num DESC,create_time DESC
+		LIMIT 0,5
+	</select>
+	
+	<!-- 获取推荐文章 -->
+	<select id="getHotArticle" parameterType="pm"  resultType="pm">
+		SELECT 
+			article_id,
+			title
+		FROM 
+			blog_article 
+		where 
+			isdel=0
+		ORDER BY
+			hot_num DESC,praise_num desc,browse_num DESC,create_time DESC
+		LIMIT 0,5
+	</select>
+	
+	<!-- 通过标签获取文章id列表 -->
+	<select id="getArticleIdsByLabelId" parameterType="pm" resultType="pm">
+		SELECT 
+			article_id 
+		from 
+			blog_article_label 
+		WHERE 
+			label_id=#{label_id}
+	</select>
+	
+	<!-- 删除文章，逻辑删除 -->
+	<update id="delArticle" parameterType="pm">
+		update blog_article
+			set isdel = 1
+		where article_id =#{article_id}
+	</update>
+	<delete id="delArticleLabel" parameterType="pm">
+		DELETE from blog_article_label WHERE article_id=#{article_id}
+	</delete>
+</mapper>

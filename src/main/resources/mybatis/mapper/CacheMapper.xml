@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lrshuai.blog.dao.CacheDao" >
+	<!-- 获取音乐列表 -->
+	<select id="findMusiclist" parameterType="pm" resultType="pm">
+		SELECT
+			a.author,
+			a.title,
+			a.url,
+			a.pic_url as pic,
+			a.lrc_url as lrc
+		from 
+			blog_music a
+		where
+		    status=1
+	</select>
+	
+	
+	<!-- 获取友情链接列表 -->
+	<select id="friendlinkList" parameterType="pm" resultType="pm">
+		SELECT link_name,link,description FROM blog_firend_link where status = 1
+	</select>
+	
+	<select id="getJokeByRandom" resultType="pm">
+		SELECT joke_id,content from blog_joke ORDER BY  RAND() LIMIT 1
+	</select>
+	
+	<select id="getIntroduce" resultType="pm">
+		SELECT id,introduce from blog_introduce LIMIT 1
+	</select>
+	
+	<select id="getTimeLineList" resultType="pm">
+		SELECT
+			a.id,
+			a.title,
+			a.content,
+			a.year,
+			a.month,
+			a.day
+		from 
+			blog_timeline a
+		ORDER BY
+			a.`year` asc,a.`month` ASC,a.day ASC
+	</select>
+	
+</mapper>

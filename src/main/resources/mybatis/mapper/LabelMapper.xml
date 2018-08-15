@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lrshuai.blog.dao.LabelDao" >
+	<!-- 批量新增-->
+	<insert id="batchSaveArticleLabel" parameterType="list">
+		insert into blog_article_label(
+			article_id,
+			label_id
+		) values
+		<foreach collection="list" item="item" index="index" separator="," >
+		(
+			#{item.article_id},
+			#{item.label_id}
+		)
+		</foreach>
+	</insert>
+	
+	
+	<insert id="batchSaveUserLabel" parameterType="list">
+		insert into blog_user_label(
+			user_id,
+			label_id
+		) values
+		<foreach collection="list" item="item" index="index" separator="," >
+		(
+			#{item.user_id},
+			#{item.label_id}
+		)
+		</foreach>
+	</insert>
+
+
+	<!-- 获取文章所有标签 -->
+	<select id="getArticleLabels" parameterType="pm" resultType="pm">
+		select 
+			a.label_id,
+			a.label_name,
+			a.label_class,
+			IFNULL(b.count,0) as count
+		from 
+			blog_labels a
+		LEFT JOIN
+			(SELECT label_id,count(label_id) as count from blog_article_label GROUP BY label_id) b
+		ON
+			a.label_id=b.label_id
+		where
+			label_type='article'
+		order by
+			label_id asc,create_time asc
+	</select>
+	
+	
+	<!-- 获取文章所有标签 -->
+	<select id="getLabelsByType" parameterType="pm" resultType="pm">
+		select 
+			label_id,
+			label_name,
+			label_class
+		from 
+			blog_labels
+		where
+			label_type=#{label_type}
+		order by
+			create_time desc
+	</select>
+	
+	<!-- 获取文章标签 -->
+	<select id="getArticleLabelById" parameterType="pm" resultType="pm">
+		SELECT 
+			b.label_id,
+			c.label_name,
+			c.label_class
+		from 
+			blog_article_label b
+		LEFT JOIN
+			blog_labels c
+		ON
+			b.label_id=c.label_id
+		where
+			b.article_id=#{article_id}
+	</select>
+	
+	
+	<!-- 获取用户标签 -->
+	<select id="getUserLabel" parameterType="pm" resultType="pm">
+		SELECT 
+			b.label_id,
+			c.label_name,
+			c.label_class
+		from 
+			blog_user_label b
+		LEFT JOIN
+			blog_labels c
+		ON
+			b.label_id=c.label_id
+		where
+			b.user_id=#{user_id}
+	</select>
+	
+	<delete id="delArticleLabel" parameterType="pm">
+		delete from blog_article_label
+		where
+			article_id=#{article_id}
+	</delete>
+	
+	
+	<delete id="delUserLabel" parameterType="pm">
+		delete from blog_user_label
+		where
+			user_id=#{user_id}
+	</delete>
+	
+</mapper>

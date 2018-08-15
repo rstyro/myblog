@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>问答列表</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" /> 
+<meta name="description" content="帅大叔的博客,这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" /> 
+<meta name="_ctx" th:content="@{/}" />
+<link rel="shortcut icon" type="image/x-icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+<link href="../static/fontawesome/css/font-awesome.min.css" th:href="@{/fontawesome/css/font-awesome.min.css}"  rel="stylesheet">
+<link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<script src="/modal/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+	#submit{
+		cursor: pointer;
+	}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div style="padding: 100px 100px 10px;">
+		    <form id="seachForm" class="bs-example bs-example-form" role="form" action="/" th:action="@{/robot/history/1}">
+		        <div class="input-group input-group-lg">
+		            <input type="text" th:value="${kw}" value="ss" name="kw" class="form-control" placeholder="听说没有搜不到的东西">
+		            <span id="submit" class="input-group-addon">搜索 <i class="fa fa-search"></i></span>
+		        </div>
+		    </form>
+		</div>
+		
+		<br>
+		<div class="table-responsive">
+		  <table class="table">
+		    <caption>列表</caption>
+		    <thead>
+		     	<tr>
+			        <th>ID</th>
+			        <th>提问</th>
+			        <th>ip</th>
+			        <th>用户ID</th>
+			        <th>添加时间</th>
+			        <th>操作</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		      <tr th:title="'得分:'+${brain.score}" th:if="${status == 'success'}" th:each="brain:${data}">
+		        <td th:text="${brain._id}">id</td>
+		        <td th:text="${brain.question}">question</td>
+		        <td th:text="${brain.ip}">ip</td>
+		        <td th:text="${brain.user_id}">1</td>
+		        <td th:text="${brain.create_time}">2017-12-06 11:12:20</td>
+		        <td>
+			        <span class="btn btn-xs btn-danger" th:onclick="'del(\''+${brain._id}+'\');'">删除</span>
+		        </td>
+		      </tr>
+		      <tr th:unless="${status == 'success'}">
+		        <td colspan="6" align="center">服务器错误</td>
+		      </tr>
+		      </tbody>
+		  </table>
+		</div>
+		<div class="row">
+			<div class="col-md-2"><a th:if="${page.getCurrentPage() &gt 1 }" class="btn btn-info" th:href="@{/robot/brain/{page_no}(page_no=${page.getCurrentPage()-1},kw=${kw})}">上一页</a></div>
+			<div class="col-md-6 col-md-offset-2"><p th:text="'总页数: '+${page.getTotalPage()}+' ,当前页为: '+${page.getCurrentPage()}"></p></div>
+			<div class="col-md-2"> <a th:if="${page.getTotalPage() &gt 1 && page.getTotalPage() > page.getCurrentPage()}" class="btn btn-info" th:href="@{/robot/brain/{page_no}(page_no=${page.getCurrentPage()+1},kw=${kw})}">下一页</a></div>
+		</div>
+	</div>
+
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/js/common.js" th:src="@{/js/common.js}"></script>
+<script>
+	$(function(){
+		$("#submit").click(function(){
+			$("#seachForm").submit();
+		});
+	})
+	
+	
+	//删除
+	function del(id){
+		if(confirm("你确定要删除吗？")){
+			$.ajax({
+				type:"post",
+				url:_ctx+"/robot/del",
+				cache:false,
+				dataType:"json",
+				data:{id:id,type:"history"},
+				success:function(data){
+					if(data.status == "success"){
+						 setTimeout('reloadPage()',500);
+					}else{
+						alert(data.msg);
+					}
+				}
+			});
+		}
+		
+	}
+	function reloadPage(){
+		 window.location.reload();
+	}
+</script>
+</body>
+</html>

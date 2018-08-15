@@ -1,0 +1,29 @@
+<aside  th:fragment="blog-left" id="fh5co-aside" role="complementary" class="border js-fullheight">
+	<h1 id="fh5co-logo"><a href="/atc/add" th:href="@{/atc/add}"><img src="../static/images/me.jpg" th:src="@{/images/logo.jpg}" /></a></h1>
+	<h3 class="name">帅大叔</h3>
+	<p class="introduced">信你所信，为你所现。一个陪你走过最艰难的人生格言！</p>
+	<nav id="fh5co-main-menu" role="navigation">
+		<ul>
+			<li><a href="index.html" th:href="@{/}">HOME</a></li>
+			<li><a href="blog/blog.html" th:href="@{/blog}">BLOG</a></li>
+			<li><a href="leaveword.html" th:href="@{/leaveword}" >留言墙</a></li>
+			<!-- 
+			<li><a href="music.htm" th:href="@{/music}">爱音乐</a></li>
+			<li><a href="share.htm" th:href="@{/share}">爱分享</a></li>
+			<li><a href="robot.htm" th:href="@{/resume}">我简历</a></li>
+			 -->
+			<li><a href="about.htm" th:href="@{/about}">关于我</a></li>
+			<li><a href="links.htm" th:href="@{/links}" >博友链</a></li>
+			<li><a href="robot.htm" th:href="@{/robot}">机器人</a></li>
+		</ul>
+	</nav>
+	<div class="fh5co-footer">
+		<p><small><span>Copyright © 2017 &nbsp;&nbsp;lrshuai.top All Rights Reserved | &nbsp;&nbsp;粤ICP备17059684号-1 &nbsp;&nbsp;| &nbsp;<a href="http://www.lrshuai.top">这个冬天不太冷的博客</a> </span> </small></p>
+		<ul>
+			<li title="我的Github 地址" data-toggle="tooltip"><a href="https://github.com/rstyro" target="_blank"><i class="fa fa-github"></i></a></li>
+			<li title="我的微信二维码" data-toggle="tooltip"><a href="javascript:void(0)" id="wechatCode"><i class="fa fa-wechat"></i></a></li>
+			<li title="QQ私聊我" data-toggle="tooltip"><a href="javascript:void(0)" onclick="javascript:window.open('tencent://message/?Menu=yes&uin=1006059906&Site=商家&Service=300&sigT=45a1e5847943b64c6ff3990f8a9e644d2b31356cb0b4ac6b24663a3c8dd0f8aa12a595b1714f9d45', '_blank', 'height=502, width=644,toolbar=no,scrollbars=no,menubar=no,status=no');"><i class="fa fa-qq"></i></a></li>
+			<li title="给我发邮件" data-toggle="tooltip"><a href="javascript:void(0)"><i class="fa fa-envelope"></i></a></li>
+		</ul>
+	</div>
+</aside>

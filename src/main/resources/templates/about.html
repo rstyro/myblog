@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>关于我</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" /> 
+<meta name="description" content="帅大叔的博客,这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" /> 
+<meta name="_ctx" th:content="@{/}" />
+<link rel="shortcut icon" type="image/x-icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+<link href="../static/fontawesome/css/font-awesome.min.css" th:href="@{/fontawesome/css/font-awesome.min.css}"  rel="stylesheet">
+<link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+<link href="../static/modal/css/modal.min.css" th:href="@{/modal/css/modal.css}" rel="stylesheet">
+<link href="../static/css/timeline.min.css" th:href="@{/css/timeline.min.css}" rel="stylesheet">
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<script src="/modal/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+	.fh5co-narrow-content{
+		color: #fff;
+	}
+	.main{
+		border-left: 1px dashed #fff;
+		min-height: 500px;
+		width: 100%;
+		margin-top: 20px;
+		position: relative;
+		z-index: 9;
+	}
+	.main div.text-center{
+		padding: 0px 10px;
+	} 
+	.main div.text-center p{
+		font-size: 1.2em;
+	}
+	.mysnow{
+			position: fixed;
+			top: 0; 
+		 	left: 0; 
+			width:100%; 
+			height: 100%; 
+			pointer-events: none;
+		  	z-index: 2;
+		 }
+</style>
+</head>
+<body>
+<div class="mysnow" style=" touch-action: pan-down; "></div>
+<div id="fh5co-page">
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+		<div th:replace="include/left :: blog-left"></div>
+
+		<div id="fh5co-main">
+			<div class="fh5co-narrow-content">
+				<h2 style="display: inline;padding-right: 20px;">关于我 </h2> <small>不知从什么时候，开始不爱说话，沉默代替了所有回答..............</small>
+				
+				<div class="main">
+					<div class="text-center">
+						<p th:utext="${introduces.introduce}">自我介绍，我文采不行，写了好多，读一次发现，真心烂，然后有删掉了。文化水平太低，知识面不广，见识少，没东西
+							写，真郁闷啊。自我介绍，我文采不行，写了好多，读一次发现，真心烂，然后有删掉了。文化水平太低，知识面不广，见识少，没东西
+							写，真郁闷啊。自我介绍，我文采不行，写了好多，读一次发现，真心烂，然后有删掉了。文化水平太低，知识面不广，见识少，没东西
+							写，真郁闷啊。
+						</p>
+					</div>
+			        <div class="container">
+			        	<h3 class="text-center">时间轨迹</h3>
+			            <div class="row">
+			                <div class="col-md-12">
+			                    <div class="main-timeline">
+			                    
+			                        <div class="timeline" th:each="timeline:${timelines}">
+			                            <div class="timeline-content">
+			                                <span class="date">
+			                                    <span class="day"><font th:text="${timeline.day}">14</font><sup>日</sup></span>
+			                                    <span class="month" th:text="${timeline.month}+'月'">4月</span>
+			                                    <span class="year" th:text="${timeline.year}">2017</span>
+			                                </span>
+			                                <h2 class="title" th:text="${timeline.title}">Brand Building</h2>
+			                                <p class="description" th:text="${timeline.content}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus, quam non pellentesque consequat, massa justo elementum nunc, ac efficitur tortor nunc sit amet dolor.</p>
+			                            </div>
+			                        </div>
+		
+			                       
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			        
+				</div>
+				
+			</div>
+		</div>
+		
+	</div>
+	
+<!-- 微信二维码 -->
+<div class="modal fade" id="myWechatCode" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title text-center" style="color: #000;">微信二维码</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row" >
+					<div class="col-sm-8 col-sm-offset-2">
+						<img width="100%;" src="../static/images/twocode.jpg" th:src="@{/images/twocode.jpg}">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/js/snow.min.js" th:src="@{/js/snow.min.js}"></script>
+<script src="../static/modal/jquery.waypoints.min.js" th:src="@{/modal/jquery.waypoints.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/js/about.js" th:src="@{/js/about.min.js}"></script>
+<script>
+
+</script>
+</body>
+</html>

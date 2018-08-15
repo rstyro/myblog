@@ -1,0 +1,70 @@
+/*
+music
+*/
+#playerbox{
+	position:fixed;
+	width:100%;
+	max-width: 500px;
+	height: 200px;
+	margin-left:-470px;
+	bottom:150px;
+	padding-left:0px;
+	z-index: 99999;
+}
+#playerbox .aplayer{
+	width: 465px;
+	background-color: rgba(0,0,0,0.9);
+	color: #fff;
+}
+#playerbox .aplayer .aplayer-info{
+	border-bottom: 0px;
+}
+#playerbox .aplayer .aplayer-title{
+	color: #fff;
+}
+#playerbox .aplayer .aplayer-author{
+	color: #fff;
+}
+#playerbox .aplayer .aplayer-lrc{
+	color: #fff;
+	padding-top: 5px;
+}
+#playerbox .aplayer .aplayer-lrc-current{
+	color: #ddd;
+}
+#playerbox .aplayer .aplayer-list ol li{
+	border: 0px;
+}
+#playerbox .aplayer .aplayer-list ol li.aplayer-list-light{
+	background: #666;
+}
+#playerbox .aplayer .aplayer-list ol li.aplayer-list-light .aplayer-list-cur{
+	color: #fff;
+}
+#playerbox .aplayer .aplayer-list ol li.aplayer-list-light .aplayer-list-index{
+	color: #f0d5d5;
+}
+#playerbox .aplayer .aplayer-list ol li.aplayer-list-light .aplayer-list-author{
+	color: #ffe;
+}
+#playerbox .aplayer .aplayer-list ol li:hover{
+	background: #333;
+	color: #000;
+}
+#playerbox div.iconb{
+	width:30px;
+	height:40px;
+	position: absolute;
+	top:5px;
+	right: 0px;
+} 
+#playerbox div.iconb i.fa{
+	width:100%;
+	height:100%;
+	display:block;
+	color:#fff;
+	border-radius:0px 15px 15px 0px;
+	font-size: 1.5em;
+	padding:10px 5px;;
+	background-color: rgba(66,66,66,0.9);
+}

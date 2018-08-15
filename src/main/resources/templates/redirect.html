@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="_ctx" th:content="@{/}" />
+<title>回调页面</title>
+</head>
+<body>
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/js/jquery.cookie.min.js" th:src="@{/js/jquery.cookie.min.js}"></script>
+	<script type="text/javascript">
+	var _ctx = $("meta[name='_ctx']").attr("content");
+	_ctx = _ctx.substr(0, _ctx.length - 1);
+	$(function(){
+		var lastUrl=_ctx+"/blog";
+		if($.cookie("lastUrl") != null){
+			lastUrl = $.cookie("lastUrl");
+		}
+		console.log($.cookie("lastUrl"));
+		window.location.href=lastUrl;
+	});
+	
+	</script>
+</body>
+</html>

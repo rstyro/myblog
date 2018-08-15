@@ -1,0 +1,535 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lrshuai.blog.dao.PublicDao" >
+	
+	<!-- 新增二维码记录-->
+	<insert id="saveQrcode" parameterType="pm">
+		insert into blog_qrcode(
+			content
+			<if test="ip != null and ip != ''">
+				,ip
+			</if>
+		) values(
+			#{content}
+			<if test="ip != null and ip != ''">
+				,#{ip}
+			</if>
+		)
+	</insert>
+	
+	<!-- 新增浏览记录-->
+	<insert id="saveBrowse" parameterType="pm">
+		insert into blog_browse(
+			table_id
+			<if test="user_id != null and user_id != ''">
+				,user_id
+			</if>
+			<if test="ip != null and ip != ''">
+				,ip
+			</if>
+		) values(
+			#{table_id}
+			<if test="user_id != null and user_id != ''">
+				,#{user_id}
+			</if>
+			<if test="ip != null and ip != ''">
+				,#{ip}
+			</if>
+		)
+	</insert>
+	
+	<!-- 新增每日浏览统计记录-->
+	<insert id="saveEveryDayBrowseNum" parameterType="pm">
+		insert into blog_day_browse(
+			browse_people_num,
+			browse_total_num,
+			create_time
+		) values(
+			#{browse_people_num},
+			#{browse_total_num},
+			#{create_time}
+		)
+	</insert>
+	
+	
+	<!-- 新增黑名单-->
+	<insert id="addBlackIP" parameterType="pm" useGeneratedKeys="true" keyProperty="id">
+		insert into blog_blackip(
+			ip,
+			create_time
+		) values(
+			#{ip},
+			#{create_time}
+		)
+	</insert>
+	
+	<!-- 新增评论记录-->
+	<insert id="saveComment" parameterType="pm" useGeneratedKeys="true" keyProperty="comment_id">
+		insert into blog_comment(
+			table_id,
+			content,
+			reply_user_id,
+			create_time
+			<if test="email != null and email != ''">
+				,email
+			</if>
+			<if test="address != null and address != ''">
+				,address
+			</if>
+			<if test="browse_version != null and browse_version != ''">
+				,browse_version
+			</if>
+			<if test="os_name != null and os_name != ''">
+				,os_name
+			</if>
+			<if test="user_id != null and user_id != ''">
+				,user_id
+			</if>
+			<if test="parent_id != null and parent_id != ''">
+				,parent_id
+			</if>
+		) values(
+			#{table_id},
+			#{content},
+			#{reply_user_id},
+			#{create_time}
+			<if test="email != null and email != ''">
+				,#{email}
+			</if>
+			<if test="address != null and address != ''">
+				,#{address}
+			</if>
+			<if test="browse_version != null and browse_version != ''">
+				,#{browse_version}
+			</if>
+			<if test="os_name != null and os_name != ''">
+				,#{os_name}
+			</if>
+			<if test="user_id != null and user_id != ''">
+				,#{user_id}
+			</if>
+			<if test="parent_id != null and parent_id != ''">
+				,#{parent_id}
+			</if>
+		)
+	</insert>
+	
+	
+	<!-- 新增点赞记录-->
+	<insert id="savePraise" parameterType="pm">
+		insert into blog_praise(
+			table_id,
+			table_type
+			<if test="user_id != null and user_id != ''">
+				,user_id
+			</if>
+		) values(
+			#{table_id},
+			#{table_type}
+			<if test="user_id != null and user_id != ''">
+			,#{user_id}
+			</if>
+		)
+	</insert>
+	
+	
+	<!-- 新增留言记录-->
+	<insert id="saveLeaveWord" parameterType="pm" useGeneratedKeys="true" keyProperty="comment_id">
+		insert into blog_leaveword(
+			content,
+			create_time
+			<if test="email != null and email != ''">
+				,email
+			</if>
+			<if test="user_id != null and user_id != ''">
+				,user_id
+			</if>
+			<if test="address != null and address != ''">
+				,address
+			</if>
+			<if test="browse_version != null and browse_version != ''">
+				,browse_version
+			</if>
+			<if test="os_name != null and os_name != ''">
+				,os_name
+			</if>
+			<if test="reply_user_id != null and reply_user_id != ''">
+				,reply_user_id
+			</if>
+			<if test="parent_id != null and parent_id != ''">
+				,parent_id
+			</if>
+		) values(
+			#{content},
+			#{create_time}
+			<if test="email != null and email != ''">
+				,#{email}
+			</if>
+			<if test="user_id != null and user_id != ''">
+				,#{user_id}
+			</if>
+			<if test="address != null and address != ''">
+				,#{address}
+			</if>
+			<if test="browse_version != null and browse_version != ''">
+				,#{browse_version}
+			</if>
+			<if test="os_name != null and os_name != ''">
+				,#{os_name}
+			</if>
+			<if test="reply_user_id != null and reply_user_id != ''">
+				,#{reply_user_id}
+			</if>
+			<if test="parent_id != null and parent_id != ''">
+				,#{parent_id}
+			</if>
+		)
+	</insert>
+	
+	
+	<!-- 新增友链-->
+	<insert id="saveFriendLink" parameterType="pm" useGeneratedKeys="true" keyProperty="link_id">
+		insert into blog_firend_link(
+			link_name,
+			link,
+			description
+		) values(
+			#{link_name},
+			#{link},
+			#{description}
+		)
+	</insert>
+	
+	<!-- 是否重复点赞 -->
+	<select id="repeatPraise" parameterType="pm" resultType="pm">
+		select praise_id from blog_praise where table_id=#{table_id} and user_id=#{user_id}
+	</select>
+	
+	<!-- 获取黑名单  -->
+	<select id="getBlackIpList" resultType="pm">
+		select id,ip from blog_blackip a where a.status = 1
+	</select>
+	
+	<select id="getleaveWordByTime" parameterType="pm" resultType="pm">
+		SELECT 
+			a.leaveword_id,
+			a.content,
+			a.address,
+			a.browse_version,
+			a.os_name,
+			a.create_time,
+			b.name
+		from 
+			blog_leaveword a 
+		left join
+			blog_user b
+		on
+			a.user_id=b.user_id
+		where
+		 	1=1 and parent_id=0
+	 	order by
+			a.create_time desc
+		 limit 5
+	</select>
+	<!-- 获取留言列表 -->
+	<select id="getleaveWordlistPage" parameterType="page" resultType="pm">
+		SELECT 
+			a.leaveword_id,
+			a.content,
+			a.address,
+			a.browse_version,
+			a.os_name,
+			a.create_time,
+			b.name,
+			b.img
+		from 
+			blog_leaveword a 
+		LEFT JOIN
+			blog_user b
+		ON
+			a.user_id=b.user_id
+		where
+		 	1=1
+		 	<if test="pm.leaveword_id != null and pm.leaveword_id != ''">
+				and leaveword_id=#{pm.leaveword_id}
+			</if>
+		order by
+			a.create_time asc
+	</select>
+	
+	<!-- 获取楼主评论 -->
+	<select id="getCommentlistPage" parameterType="page" resultType="pm">
+		SELECT 
+			a.comment_id,
+			a.parent_id,
+			a.table_id,
+			a.user_id,
+			a.reply_user_id,
+			a.content,
+			a.create_time,
+			a.praise_num,
+			a.browse_version,
+			a.address,
+			a.os_name,
+			b.`name` as userName,
+			b.img as userPath
+		from 
+			blog_comment a 
+		LEFT JOIN
+			blog_user b
+		ON
+			a.user_id = b.user_id
+		WHERE
+			table_id=#{pm.table_id} 
+			<if test="pm.comment_id == null or pm.comment_id == ''">
+				and (a.parent_id is null or a.parent_id='')
+			</if>
+			<if test="pm.comment_id != null and pm.comment_id != ''">
+				and comment_id=#{pm.comment_id}
+			</if>
+		order by
+			a.create_time asc,a.praise_num desc
+	</select>
+	
+	<!-- 获取回复楼主的 -->
+	<select id="getCommentlist" parameterType="pm" resultType="pm">
+		SELECT 
+			a.comment_id,
+			a.parent_id,
+			a.table_id,
+			a.user_id,
+			a.reply_user_id,
+			a.content,
+			a.create_time,
+			a.praise_num,
+			a.browse_version,
+			a.address,
+			a.os_name,
+			b.`name` as userName,
+			b.img as userPath,
+			c.name as replyUserName
+		from 
+			blog_comment a 
+		LEFT JOIN
+			blog_user b
+		ON
+			a.user_id = b.user_id
+		left join
+			blog_user c
+		on
+			a.reply_user_id=c.user_id
+		WHERE
+			table_id=#{table_id}
+			<if test="comment_id == null or comment_id == ''">
+			 and (a.parent_id is not null or a.parent_id != '')
+			</if>
+			<if test="comment_id != null and comment_id != ''">
+				and comment_id=#{comment_id}
+			</if>
+		order by
+			a.praise_num desc,a.create_time asc
+	</select>
+	
+	
+	<!-- 获取楼主留言的 -->
+	<select id="getleaveWordslistPage" parameterType="page" resultType="pm">
+		SELECT 
+			a.leaveword_id as comment_id,
+			a.parent_id,
+			a.user_id,
+			a.reply_user_id,
+			a.content,
+			a.create_time,
+			a.praise_num,
+			a.browse_version,
+			a.address,
+			a.os_name,
+			b.`name` as userName,
+			b.img as userPath,
+			c.name as replyUserName
+		from 
+			blog_leaveword a 
+		LEFT JOIN
+			blog_user b
+		ON
+			a.user_id = b.user_id
+		left join
+			blog_user c
+		on
+			a.reply_user_id=c.user_id
+		WHERE
+		 1=1
+			<if test="pm.comment_id == null or pm.comment_id == ''">
+				and (a.parent_id is null or a.parent_id='')
+			</if>
+			<if test="pm.comment_id != null and pm.comment_id != ''">
+				and a.leaveword_id=#{pm.comment_id}
+			</if>
+		order by
+			a.create_time asc,a.praise_num desc
+	</select>
+	
+	<!-- 获取回复楼主留言的 -->
+	<select id="getleaveWordlist" parameterType="pm" resultType="pm">
+		SELECT 
+			a.leaveword_id as comment_id,
+			a.parent_id,
+			a.user_id,
+			a.reply_user_id,
+			a.content,
+			a.create_time,
+			a.praise_num,
+			a.browse_version,
+			a.address,
+			a.os_name,
+			b.`name` as userName,
+			b.img as userPath,
+			c.name as replyUserName
+		from 
+			blog_leaveword a 
+		LEFT JOIN
+			blog_user b
+		ON
+			a.user_id = b.user_id
+		left join
+			blog_user c
+		on
+			a.reply_user_id=c.user_id
+		WHERE
+			1=1
+			<if test="comment_id == null and comment_id == ''">
+				and (a.parent_id is not null or a.parent_id != '')
+			</if>
+			<if test="comment_id != null and comment_id != ''">
+				and a.leaveword_id=#{comment_id}
+			</if>
+		order by
+			a.praise_num desc,a.create_time asc
+	</select>
+	
+	<!-- 获取文章作者ID -->
+	<select id="getArticleAutherId" parameterType="pm" resultType="pm">
+		SELECT
+			a.article_id,
+			a.user_id
+		from 
+			blog_article a
+		where
+			a.article_id=#{table_id} and isdel=0
+	</select>
+	
+	
+	<!-- 判断是否是楼层评论id -->
+	<select id="checkCommentId" parameterType="pm" resultType="pm">
+		SELECT
+			a.comment_id,
+			a.parent_id,
+			a.user_id
+		from 
+			blog_comment a
+		where
+			a.comment_id=#{comment_id} and a.user_id=#{user_id}
+	</select>
+	
+	
+	<select id="getJokelist" parameterType="pm" resultType="pm">
+		SELECT 
+			joke_id,
+			content 
+		FROM 
+			blog_joke
+	</select>
+	
+	<select id="getDayBrowseList" resultType="pm">
+		SELECT 
+			a.id,
+			a.browse_people_num,
+			a.browse_total_num,
+			a.create_time
+		 from 
+			blog_day_browse a
+		ORDER BY
+			a.create_time ASC
+	</select>
+	
+	
+	<!-- 更新浏览数 -->
+	<update id="updateBrowseNum" parameterType="pm" >
+		update blog_article
+				set browse_num = browse_num+1
+		where
+			article_id=#{table_id}
+	</update>
+	
+	<update id="updateBlackIP" parameterType="pm" >
+		update blog_blackip
+				set status = 0
+		where
+			ip=#{ip}
+	</update>
+	
+	<!-- 删除点赞记录 -->
+	<delete id="delPraise" parameterType="pm">
+		delete from blog_praise where table_id=#{table_id} and user_id=#{user_id}
+	</delete>
+	
+	<!-- 删除评论记录 -->
+	<delete id="delComment" parameterType="pm">
+		DELETE FROM
+ 			blog_comment
+		where
+			(user_id=#{user_id} AND comment_id=#{comment_id}) 
+			<if test="parent_id != null and parent_id != ''">
+				OR parent_id=#{parent_id}
+			</if>
+			
+	</delete>
+	
+	
+	<!-- 更新点赞数 -->
+	<update id="updatePraiseNum" parameterType="pm" >
+		update 
+		<if test="table_type == 'article'">
+			blog_article
+		</if>
+		
+		<if test="table_type == 'comment'">
+			blog_comment
+		</if>
+		<if test="table_type == 'leaveword'">
+			blog_leaveword
+		</if>
+			<if test="praise_type == 'add'">
+				set praise_num = praise_num+1
+			</if>
+			<if test="praise_type == 'sub'">
+				set praise_num = praise_num-1
+			</if>
+		where
+			<if test="table_type == 'article'">
+			article_id=#{table_id}
+			</if>
+			<if test="table_type == 'comment'">
+			comment_id=#{table_id}
+			</if>
+			<if test="table_type == 'leaveword'">
+			leaveword_id=#{table_id}
+			</if>
+			and praise_num != 0
+	</update>
+	
+	<!-- 更新评论数 -->
+	<update id="updateCommentNum" parameterType="pm" >
+		update blog_article
+			<if test="comment_type == 'add'">
+				set comment_num = comment_num+1
+			</if>
+			<if test="comment_type == 'sub'">
+				set comment_num = comment_num-1
+			</if>
+		where
+			article_id=#{table_id}
+	</update>
+
+	
+</mapper>

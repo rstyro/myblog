@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}">这个冬天不太冷的博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" />
+<meta name="description"
+	content="帅大叔的博客,这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" />
+<meta name="_ctx" th:content="@{/}" />
+<link rel="shortcut icon" type="image/x-icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+<link href="../static/fontawesome/css/font-awesome.min.css" th:href="@{/fontawesome/css/font-awesome.min.css}" rel="stylesheet">
+<link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+<link href="../static/modal/css/modal.min.css" th:href="@{/modal/css/modal.min.css}" rel="stylesheet">
+<link href="../static/css/aplayer.min.css" th:href="@{/css/aplayer.min.css}" rel="stylesheet">
+<link href="../static/css/blog.core.css" th:href="@{/css/blog.core.css}" rel="stylesheet">
+
+<!--[if lt IE 9]>
+<script src="/modal/respond.min.js"></script>
+<![endif]-->
+<style>
+</style>
+</head>
+<body onbeforeunload="return myunload()">
+	<div id="fh5co-page">
+		<div class="snow-content">
+		    <canvas class="snow-canvas" speed="1" interaction="false" size="2" count="80" opacity="0.00001" start-color="rgba(253,252,251,1)" end-color="rgba(251,252,253,0.3)" wind-power="0" image="false" width="1366" height="667"></canvas>
+		    <canvas class="snow-canvas" speed="3" interaction="true" size="6" count="30" start-color="rgba(253,252,251,1)" end-color="rgba(251,252,253,0.3)" opacity="0.00001" wind-power="2" image="false" width="1366" height="667"></canvas>
+		    <canvas class="snow-canvas" speed="3" interaction="true" size="12" count="30" wind-power="-5" image="./images/snow2.png" width="1366" height="667"></canvas>	    	
+	    </div>	
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+		<div th:replace="include/left :: blog-left"></div>
+		
+		<!-- MAIN -->	
+		<div id="fh5co-main">
+			<div class="fh5co-narrow-content">
+				<h2 style="display: inline;padding-right: 20px;">博客 </h2> <small>人生并不像火车要通过每个站似的经过每一个生活阶段。人生总是直向前行走，从不留下什么..............</small>
+				<div id="lrs-blog-main">
+					<div id="lrs-blog-main-left" >
+						<div th:if="${#lists.isEmpty(articles)} " class="blog-article">
+							博主正在拼命写此内容的文章！
+						</div>
+						<div th:each="atc,atcstat:${articles}" th:if="${atcstat.index == 0}" class="blog-article">
+							<div class="author">
+								<a href="#" th:href="@{/u/{uid}(uid=${atc.user_id})}" target="_blank"><img th:src="${#httpServletRequest.getContextPath()}+${atc.img}" src="/images/logo.jpg"></a><a href="#" target="_blank" th:href="@{/atc/show/{id}(id=${atc.article_id})}" th:text="${atc.title}" class="title">Linux 下安装配置svn服务器</a>
+							</div>
+							<div class="content">
+								<p th:text="${#strings.abbreviate(atc.text,200)}">1、安装svn服务器（以cenos为例） yum install subversion 显示如下图： 然后提示 输入y 就可以了 2、创建svn版本仓库 cd /usr/local/ //进入目录，准备创建svn目录 mkdir svnRepo //创建一个svn目录 chmod -R 777 svnRepo...</p>
+							</div>
+							<div class="footer">
+								<div class="footer-left">
+									<span><i class="glyphicon glyphicon-eye-open blog-info icon-sm"></i> <a target="_blank" href="#" th:href="@{/atc/show/{id}(id=${atc.article_id})}">阅读</a>(<span th:text="${atc.browse_num}">48946</span>)</span> 
+									<span><i class="glyphicon glyphicon-comment blog-success icon-sm"></i><a target="_blank" href="#" th:href="@{/atc/show/{id}#comment(id=${atc.article_id})}">评论</a>(<span th:text="${atc.comment_num}">45</span>)</span>
+									<span><i class="glyphicon glyphicon glyphicon-thumbs-up icon-sm red"></i><a target="_blank" href="#" th:href="@{/atc/show/{id}#praise(id=${atc.article_id})}">点赞</a>(<span th:text="${atc.praise_num}">7989</span>)</span>
+								</div>
+								<div class="footer-right">
+										<span th:each="label:${atc.labels}"><label th:class="'label label-'+${label.label_class}" th:text="${label.label_name}"  class="label label-info">java</label></span>
+										<span th:text="${atc.create_time}">2017-12-12 12:21:20</span>
+								</div>
+							</div>
+						</div>
+						
+						<div th:each="atc,atcstat:${articles}" th:unless="${atcstat.index == 0}" class="blog-article blog-article-top">
+							<div class="author">
+								<a href="#" th:href="@{/u/{uid}(uid=${atc.user_id})}" target="_blank"><img th:src="${#httpServletRequest.getContextPath()}+${atc.img}" src="/images/logo.jpg"></a><a href="#" target="_blank" th:href="@{/atc/show/{id}(id=${atc.article_id})}" th:text="${atc.title}" class="title">Linux 下安装配置svn服务器</a>
+							</div>
+							<div class="content">
+								<p th:text="${#strings.abbreviate(atc.text,200)}">1、安装svn服务器（以cenos为例） yum install subversion 显示如下图： 然后提示 输入y 就可以了 2、创建svn版本仓库 cd /usr/local/ //进入目录，准备创建svn目录 mkdir svnRepo //创建一个svn目录 chmod -R 777 svnRepo...</p>
+							</div>
+							<div class="footer">
+								<div class="footer-left">
+									<span><i class="glyphicon glyphicon-eye-open blog-info icon-sm"></i> <a href="#" target="_blank" th:href="@{/atc/show/{id}(id=${atc.article_id})}">阅读</a>(<span th:text="${atc.browse_num}">48946</span>)</span> 
+									<span><i class="glyphicon glyphicon-comment blog-success icon-sm"></i><a href="#" target="_blank" th:href="@{/atc/show/{id}#comment(id=${atc.article_id})}">评论</a>(<span th:text="${atc.comment_num}">45</span>)</span>
+									<span><i class="glyphicon glyphicon glyphicon-thumbs-up icon-sm red"></i><a href="#" target="_blank" th:href="@{/atc/show/{id}#praise(id=${atc.article_id})}">点赞</a>(<span th:text="${atc.praise_num}">7989</span>)</span>
+								</div>
+								<div class="footer-right">
+										<span th:each="label:${atc.labels}"><label th:class="'label label-'+${label.label_class}" th:text="${label.label_name}"  class="label label-info">java</label></span>
+										<span th:text="${atc.create_time}">2017-12-12 12:21:20</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="page-box" th:if="${page.totalPage > 1}">
+							<a id="blog-showMore" href="javascript:void(0)" th:attr="url=${page_url},page=${page.currentPage+1}" class="page">显示更多 <i class="fa fa-plus-square-o"></i></a>
+						</div>
+					</div>
+					
+					<div id="lrs-blog-main-right" >
+						<div style="background-color: #fff;margin-bottom: 10px;border-radius: 4px;">
+							<form action="/search" th:action="@{/search}" class="bs-example bs-example-form"  role="form">
+						        <div class="input-group input-group-sm">
+						            <span class="input-group-addon"><i class="fa fa-search" id="searchIcon"></i></span>
+						            <input type="text" class="form-control" id="keyword" th:if="${#strings.isEmpty(keyword)}" name="keyword" placeholder="输入关键字搜索全文文章">
+						            <input type="text" class="form-control" id="keyword" th:unless="${#strings.isEmpty(keyword)}" name="keyword" th:value="${keyword}" placeholder="输入关键字搜索全文文章">
+						        </div>
+						    </form>
+						</div>
+					    <div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-tags"></i><strong> 文章标签</strong>
+								</h3>
+							</div>
+							<div class="panel-body">
+							 	<ul class="blog-label-ul">
+									<li th:each="label:${labels}"  title="文章标签" th:title="${label.label_name}"><a href="#" th:href="@{/blog/label/{id}(id=${label.label_id})}"><strong th:text="${label.label_name}">JAVA</strong></a> &nbsp;(<span th:text="${label.count}">12</span>)</li>
+								</ul>
+							</div>
+						</div>
+				    	
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="glyphicon glyphicon-tasks"></i><strong> 文章存档</strong>
+								</h3>
+							</div>
+							<div class="panel-body">
+								<ul class="list-group">
+									<li class="list-group-item" th:each="month:${months}" th:attr="id=${month.article_month}" th:title="${month.article_month}+'共发布了 '+${month.count}+' 篇文章'" data-toggle="tooltip"  title="共发布几篇文章"><strong th:text="${month.article_month}">2017-03</strong><span class="badge" th:text="${month.count}">12</span></li>
+								</ul>
+							</div>
+						</div>
+						<div>
+							<ul id="myTab" class="nav nav-tabs">
+							    <li class="active"><a href="#hot-article" data-toggle="tab"><i class="fa fa-fire"></i> 热门文章</a></li>
+							    <li><a href="#recom-article" data-toggle="tab"><i class="fa fa-leaf"></i> 推荐文章</a></li>
+							    <li><a href="#random-article" data-toggle="tab"><i class="fa fa-random"></i> 随机文章</a></li>
+							</ul>
+							<div id="myTabContent" class="tab-content">
+							    <div class="tab-pane fade in active" id="hot-article">
+							        <ul class="blog_article_recommend_ul">
+										<li th:each="hot_atc,hotstat:${hots}"  th:title="${hot_atc.title}" data-toggle="tooltip" data-placement="bottom">
+											<span class="r_n" th:text="${hotstat.count}">1</span>
+											<a href="#" target="_blank" th:href="@{/atc/show/{aid}(aid=${hot_atc.article_id})}" th:text="${#strings.abbreviate(hot_atc.title,20)}">Linux 下安装配置svn服务器</a>
+										</li>
+									</ul>
+							    </div>
+							    <div class="tab-pane fade" id="recom-article">
+							        <ul class="blog_article_recommend_ul">
+										<li th:each="rem_atc,remtat:${recommends}"  th:title="${rem_atc.title}" data-toggle="tooltip" data-placement="bottom">
+											<span class="r_n" th:text="${remtat.count}">1</span>
+											<a href="#" target="_blank" th:href="@{/atc/show/{id}(id=${rem_atc.article_id})}" th:text="${#strings.abbreviate(rem_atc.title,20)}">Linux 下安装配置svn服务器</a>
+										</li>
+									</ul>
+							    </div>
+							    <div class="tab-pane fade" id="random-article">
+								    <ul class="blog_article_recommend_ul">
+										<li th:each="random_atc,rstat:${randoms}"  th:title="${random_atc.title}" data-toggle="tooltip" data-placement="bottom">
+											<span class="r_n" th:text="${rstat.count}">1</span>
+											<a href="#" target="_blank" th:href="@{/atc/show/{id}(id=${random_atc.article_id})}" th:text="${#strings.abbreviate(random_atc.title,20)}">Linux 下安装配置svn服务器</a>
+										</li>
+									</ul>
+							    </div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			<a href="javascript:void(0)" data-toggle="tooltip"  class="blog-top"></a>
+		</div>
+		<!-- MAIN END -->
+		
+		<div id="playerbox" title="音乐播放器" data-toggle="tooltip">
+			<div id="blogPlayer" class="aplayer" ></div>
+			<div class="iconb" ><i class="fa fa-music" ></i></div>
+		</div>
+</div>
+<!-- 微信二维码 -->
+<div class="modal fade" id="myWechatCode" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title text-center" style="color: #000;">微信二维码</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row" >
+					<div class="col-sm-8 col-sm-offset-2">
+						<img width="100%;" src="../static/images/twocode.jpg" th:src="@{/images/twocode.jpg}">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>	
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/Aplayer/APlayer.min.js" th:src="@{/Aplayer/APlayer.min.js}"></script>
+<script src="../static/modal/jquery.waypoints.min.js" th:src="@{/modal/jquery.waypoints.min.js}"></script>
+<script src="../static/js/jquery.cookie.min.js" th:src="@{/js/jquery.cookie.min.js}"></script>
+<script src="../static/js/blog.min.js" th:src="@{/js/blog.min.js}"></script>
+<script src="../static/js/snow-plugin.js" th:src="@{/js/snow-plugin.js}"></script>
+<script type="text/javascript">
+var _ctx = $("meta[name='_ctx']").attr("content");
+_ctx = _ctx.substr(0, _ctx.length - 1);
+$(window).resize(function (){
+	$("#fh5co-main").css("min-height",$(window).height()+"px");
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lrshuai.blog.dao.UserDao" >
+
+	<!-- 保存用户信息 -->
+	<insert id="saveUser" parameterType="pm" useGeneratedKeys="true" keyProperty="user_id">
+		insert into blog_user(
+			username,
+			name,
+			password,
+			<if test="email != null and email != ''">
+			email,
+			</if>
+			img,
+			<if test="sex != null and sex != ''">
+				sex,
+			</if>
+			<if test="sign != null and sign != ''">
+				sign,
+			</if>
+			<if test="locate != null and locate != ''">
+				locate,
+			</if>
+			<if test="register_type != null and register_type != ''">
+				register_type,
+			</if>
+			<if test="third_uuid != null and third_uuid != ''">
+				third_uuid,
+			</if>
+			<if test="status != null and status != ''">
+				status,
+			</if>
+			last_login,
+			create_time,
+			ip
+		)values(
+			#{username},
+			#{name},
+			#{password},
+			<if test="email != null and email != ''">
+			#{email},
+			</if>
+			#{img},
+			<if test="sex != null and sex != ''">
+				#{sex},
+			</if>
+			<if test="sign != null and sign != ''">
+				#{sign},
+			</if>
+			<if test="locate != null and locate != ''">
+				#{locate},
+			</if>
+			<if test="register_type != null and register_type != ''">
+				#{register_type},
+			</if>
+			<if test="third_uuid != null and third_uuid != ''">
+				#{third_uuid},
+			</if>
+			<if test="status != null and status != ''">
+				#{status},
+			</if>
+			#{create_time},
+			#{create_time},
+			#{ip}
+		)
+	</insert>
+	
+	
+	<!-- 获取用户信息 -->
+	<select id="getUserInfo" parameterType="pm" resultType="pm">
+		SELECT
+			cast(a.user_id as char) as user_id,
+			a.username,
+			a.password,
+			a.`name`,
+			a.img,
+			a.sex,
+			a.sign,
+			a.locate,
+			a.concern_num,
+			a.fans_num,
+			a.register_type,
+			a.third_uuid,
+			a.last_login,
+			a.ip,
+			a.`status`,
+			a.auth_robot,
+			a.auth_blog,
+			a.create_time
+		from 
+			blog_user a
+		where 1=1
+		<if test="username != null and password != null">
+	  	and	(
+	  		(a.username = #{username} and a.password = #{password})
+	  		or
+	  		(a.email = #{username} and a.password = #{password})
+	  		)
+		</if>
+		<if test="user_id != null and user_id != ''">
+		and a.user_id = #{user_id}
+		</if>
+		<if test="third_uuid != null and third_uuid != ''">
+		and a.third_uuid = #{third_uuid}
+		</if>
+		<if test="register_type != null and register_type != ''">
+		and a.register_type = #{register_type}
+		</if>
+		<if test="userName != null and userName != ''">
+			and a.name = #{userName} and a.register_type not in("qq","blog","weixin","weibo")
+		</if>
+	</select>
+	
+	<!-- 检测邮箱是否重复 -->
+	<select id="repeatEmail" parameterType="pm" resultType="pm">
+		select 
+			a.user_id,
+			a.username,
+			a.password,
+			a.`name`
+		from
+			blog_user a
+		where
+			a.email = #{email}
+			<if test="username != nul and username != ''">
+			 or a.username=#{username}
+			</if>
+	</select>
+	
+	<select id="getTotalPraiseNum" parameterType="pm" resultType="pm">
+		SELECT IFNULL(SUM(praise_num),0) as totalPraiseNum ,user_id from blog_article WHERE user_id=#{user_id}
+	</select>
+	
+	
+	<select id="getAboutMeInfo" parameterType="pm" resultType="pm">
+		SELECT 
+			onlineName,
+			locate,
+			nativePlace,
+			profession,
+			skills,
+			phone,
+			content1,
+			content2,
+			content3,
+			content4,
+			content5,
+			create_time
+		from 
+			blog_introduce
+	</select>
+
+	<!-- 更新用户信息 -->
+	<update id="updateUserInfo" parameterType="pm">
+		UPDATE blog_user a
+			SET 
+				<if test="name != null and name != ''">
+					a.NAME=#{name},
+				</if>
+				
+				<if test="password != null and password != ''">
+					a.password=#{password},
+				</if>
+				
+				<if test="email != null and email != ''">
+					a.email=#{email},
+				</if>
+				
+				<if test="img != null and img != ''">
+					a.img=#{img},
+				</if>
+				<if test="sex != null and sex != ''">
+					a.sex=#{sex},
+				</if>
+				
+				<if test="sign != null and sign != ''">
+					a.sign=#{sign},
+				</if>
+				
+				<if test="locate != null and locate != ''">
+					a.locate=#{locate},
+				</if>
+				
+				<if test="register_type != null and register_type != ''">
+					a.register_type=#{register_type},
+				</if>
+				
+				<if test="third_uuid != null and third_uuid != ''">
+					a.third_uuid=#{third_uuid},
+				</if>
+				
+				<if test="last_login != null and last_login != ''">
+					a.last_login=#{last_login},
+				</if>
+				
+				<if test="status != null and status != ''">
+					a.status=#{status},
+				</if>
+				
+				<if test="create_time != null and create_time != ''">
+					a.create_time=#{create_time},
+				</if>
+				
+				<if test="ip != null and ip != ''">
+					a.ip=#{ip}
+				</if>
+		WHERE 
+			1=1
+			<if test="user_id != null and user_id !=''">
+				and	a.user_id=#{user_id}
+			</if>
+			<if test="email != null and email != ''">
+				and a.email=#{email}
+			</if>
+	</update>
+	
+</mapper>

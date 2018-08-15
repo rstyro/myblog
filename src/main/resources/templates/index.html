@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>这个冬天不太冷的博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" /> 
+<meta name="description" content="帅大叔的博客,这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" /> 
+<meta name="_ctx" th:content="@{/}" />
+<link rel="shortcut icon" type="image/x-icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+<link href="../static/fontawesome/css/font-awesome.min.css" th:href="@{/fontawesome/css/font-awesome.min.css}"  rel="stylesheet">
+<link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+<link href="../static/modal/css/modal.min.css" th:href="@{/modal/css/modal.min.css}" rel="stylesheet">
+<link href="../static/modal/css/animate.min.css" th:href="@{/modal/css/animate.min.css}" rel="stylesheet">
+<link href="../static/modal/css/flexslider.min.css" th:href="@{/modal/css/flexslider.min.css}" rel="stylesheet">
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<script src="/modal/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+</style>
+</head>
+<body>
+<div id="fh5co-page">
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+		<div th:replace="include/left :: blog-left"></div>
+
+		<div id="fh5co-main">
+			<aside id="fh5co-hero" class="js-fullheight">
+				<div class="flexslider js-fullheight">
+					<ul class="slides">
+				   	<li style="background-image: url(images/bg_1.jpg);">
+				   		<div class="overlay"></div>
+				   		<div class="container-fluid">
+				   			<div class="row">
+					   			<div class="col-md-8 col-md-offset-2 text-center js-fullheight slider-text">
+					   				<div class="slider-text-inner">
+					   					<h1>进入 <strong><a href="http://www.lrshuai.top/" th:href="@{/blog}" title="博客">博客</a></strong></h1>
+					   					<h2>Be yourself.Keep real</h2>
+										<p class="white">一支画笔，勾勒来日方长， 勾勒远方有你的模样。 愿岁月静好，时光不老， 我在长街的转角开始倒数， 期待遇到你的那一秒</p>
+					   				</div>
+					   			</div>
+					   		</div>
+				   		</div>
+				   	</li>
+				   	<li style="background-image: url(images/bg_2.jpg);">
+				   		<div class="overlay"></div>
+				   		<div class="container-fluid">
+				   			<div class="row">
+					   			<div class="col-md-8 col-md-offset-2 text-center js-fullheight slider-text">
+					   				<div class="slider-text-inner">
+					   					<h1>重生或毁灭</h1>
+										<h2>Rebirth Or Destruction </h2>
+										<p class="white">在那个被纷纭毁灭的2012过去了，地球依然完好无整，可我的世界却在那一年被摧毁。地球活了，我的爱情死了</p>
+					   				</div>
+					   			</div>
+					   		</div>
+				   		</div>
+				   	</li>
+				   	<li style="background-image: url(images/bg_3.jpg);">
+				   		<div class="overlay"></div>
+				   		<div class="container-fluid">
+				   			<div class="row">
+					   			<div class="col-md-10 col-md-offset-1 text-center js-fullheight slider-text">
+					   				<div class="slider-text-inner">
+					   					<h1><i class="fa fa-smile-o"></i></h1>
+										<h2>你的笑，我看一眼就醉</h2>
+										<p class="white">一别经年，你我再见，我一句别来无恙，你一句好久不见，是无情的多情人，还是无缘的有情人，终究都是被命运捉弄的可怜人。</p>
+					   				</div>
+					   			</div>
+					   		</div>
+					   		
+				   		</div>
+				   	</li>
+				  	</ul>
+			  	</div>
+			</aside>
+			
+		</div>
+		
+	</div>
+<!-- 微信二维码 -->
+<div class="modal fade" id="myWechatCode" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title text-center" style="color: #000;">微信二维码</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row" >
+					<div class="col-sm-8 col-sm-offset-2">
+						<img width="100%;" src="../static/images/twocode.jpg" th:src="@{/images/twocode.jpg}">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>	
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/modal/modernizr-2.6.2.min.js" th:src="@{/modal/modernizr-2.6.2.min.js}"></script>
+<script src="../static/modal/jquery.flexslider-min.js" th:src="@{/modal/jquery.flexslider-min.js}"></script>
+<script src="../static/modal/jquery.waypoints.min.js" th:src="@{/modal/jquery.waypoints.min.js}"></script>
+<script src="../static/modal/modal.min.js" th:src="@{/modal/modal.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script>
+	$(function(){
+		$("#fh5co-main-menu ul li:eq(0)").addClass("fh5co-active");
+		$("#wechatCode").click(function(){
+			$("#myWechatCode").modal("show");
+		});
+	})
+
+</script>
+</body>
+</html>

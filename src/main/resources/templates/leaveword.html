@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>留言墙</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" /> 
+<meta name="description" content="帅大叔的博客,这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" /> 
+<meta name="_ctx" th:content="@{/}" />
+<link rel="shortcut icon" type="image/x-icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+<link href="../static/fontawesome/css/font-awesome.min.css" th:href="@{/fontawesome/css/font-awesome.min.css}"  rel="stylesheet">
+<link href="../static/bootstrap/css/bootstrap.css" th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+<link href="../static/modal/css/modal.min.css" th:href="@{/modal/css/modal.min.css}" rel="stylesheet">
+<link href="../static/css/emoji.min.css" rel="stylesheet" th:href="@{/css/emoji.min.css}">
+<link href="../static/css/blog.core.min.css" rel="stylesheet" th:href="@{/css/blog.core.css}">
+<link href="../static/comment/css/comment.css" rel="stylesheet" th:href="@{/comment/css/comment.css}">
+<link href="../static/comment/css/emoji.css" rel="stylesheet" th:href="@{/comment/css/emoji.css}">
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<script src="/modal/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+	#pageText{
+		font-size: 1.5em;
+		color: #fff;
+	}
+	#pageText:HOVER{
+		color: #009688;
+	}
+</style>
+</head>
+<body>
+<div id="fh5co-page">
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+		<div th:replace="include/left :: blog-left"></div>
+
+		<div id="fh5co-main">
+			<div class="fh5co-narrow-content">
+				<h2 style="display: inline;padding-right: 20px;">留言 </h2> <small>哭也不会改变什么，这个世界从来不会对任何人温柔..............</small>
+				<!-- 为了判断用户是否登陆 -->
+				<input type="hidden" id="user_id" value="0" th:if="${not #lists.isEmpty(session.SESSION_USER)}" th:value="${session.SESSION_USER.user_id}" />
+				<input type="hidden" id="user_id" value="0" th:if="${#lists.isEmpty(session.SESSION_USER)}" />
+				<div id="lrs-blog-main">
+					<div id="lrs-blog-main-left" >
+						<div style="padding-right: 10px;">
+							<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>一、不要骂人，不要骂人，不要骂人。</div>
+							<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>二、可发表心情、伤心事、开心事、故事</div>
+							<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>三、对本站有什么建议的，欢迎提出，反正我也不会改</div>
+						</div>
+						
+						<div class="leaveword-box">
+							<div class="myinput-group">
+								<label th:if="${not #lists.isEmpty(session.SESSION_USER)}" >昵称:</label><input type="text" name="nick_name" value="" th:if="${not #lists.isEmpty(session.SESSION_USER)}" th:value="${session.SESSION_USER.name}" placeholder="可选，写你喜欢的昵称"/>
+								<label th:if="${#lists.isEmpty(session.SESSION_USER)}" >昵称:</label><input type="text" name="nick_name" value="" th:if="${#lists.isEmpty(session.SESSION_USER)}" placeholder="可选，写你喜欢的昵称"/>
+								<label>邮箱:</label><input type="text" name="email" value="" placeholder="可选，调入你的邮箱"/>
+								<label><a href="javascript:void(0)" id="qqthird"><img src="../static/images/qq.png" th:src="@{/images/qq.png}"> QQ登陆</a></label>
+							</div>
+							<div class="commentbox">
+								<textarea cols="80" rows="50" placeholder="来说几句吧......" class="mytextarea" id="content"></textarea>
+								<div class="send-box">
+									<a href="javascript:void(0)" class="smile"><i class="fa fa-smile-o"></i></a>
+									<a href="#" class="btn-send" uid="1">发送</a>
+								</div>
+							</div>
+						</div>
+						
+						<div>
+							<hr>
+							<h2><i class="fa fa-comment-o"> 共<span id="leaveNum">0</span>条留言</h2>
+						</div>
+						<div>
+							<div class="comment-list">
+		
+							</div>
+							<a href="javascript:void(0)" id="pageText">没有更多了...</a>
+						</div>
+					</div>
+					<div id="lrs-blog-main-right" >
+					
+						<div class="panel panel-default" th:unless="${#arrays.isEmpty(joke)}">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-envira"></i><strong> 每日一乐</strong>
+								</h3>
+							</div>
+							<div class="panel-body">
+								<p th:text="${joke.content}">
+								前世三生石上三生缘，今生孟婆庄里孟婆汤，来生轮回路上论轮回。 
+								情生一念，遗落了多少红尘荒芜？ 
+								无需多言，此生必属于你，任沧海桑田，红尘万变。
+								</p>
+							</div>
+						</div>
+						
+						<div class="panel panel-default" >
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="glyphicon glyphicon-fire"></i><strong> 最近留言</strong>
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div th:each="leave,lstat:${leaves}" style="clear: both;">
+									<em th:text="${lstat.count}+'、'">1</em>
+									<span th:utext="${leave.content}">
+									前世三生石上三生缘，今生孟婆庄里孟婆汤，来生轮回路上论轮回。 
+									</span>
+									<br>
+									<span th:text="${leave.create_time}" style="color: #ccc;"></span>
+									<p class="pull-right">来自: <span th:text="${leave.name}">匿名</span></p>
+								</div>
+								
+							</div>
+						</div>
+						
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<i class="fa fa-drupal"></i><strong> 逗逗狗</strong>
+								</h3>
+							</div>
+							<div class="panel-body">
+								<object type="application/x-shockwave-flash" style="outline:none;" data="http://cdn.abowman.com/widgets/dog/dog.swf?3?up_eyeColor=F50737&up_backgroundColor=FFFFFF&up_tongueColor=FFCCCC&up_noseColor=333333&up_legLength=5&up_dogName=aBowman%20Dog&up_foodColor=C48218&up_treatColor=EEEEEE&up_waterColor=DAF1F5&up_foodBowlColor=FF0000&up_waterBowlColor=B4DDF0&up_feetColor=FFFFFF&up_ballColor=FF0000&up_bodyColor=EBD88D&up_collarColor=0000FF&up_boneColor=EEEEEE&up_tailTipColor=FFFFFF&up_earColor=EBD88D&" width="100%" height="300"><param name="movie" value="http://cdn.abowman.com/widgets/dog/dog.swf?3?up_eyeColor=F50737&up_backgroundColor=FFFFFF&up_tongueColor=FFCCCC&up_noseColor=333333&up_legLength=5&up_dogName=aBowman%20Dog&up_foodColor=C48218&up_treatColor=EEEEEE&up_waterColor=DAF1F5&up_foodBowlColor=FF0000&up_waterBowlColor=B4DDF0&up_feetColor=FFFFFF&up_ballColor=FF0000&up_bodyColor=EBD88D&up_collarColor=0000FF&up_boneColor=EEEEEE&up_tailTipColor=FFFFFF&up_earColor=EBD88D&"></param><param name="AllowScriptAccess" value="always"></param><param name="wmode" value="opaque"></param><param name="bgcolor" value="FFFFFF"/></object>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			
+		</div>		
+	</div>
+	
+<!-- 微信二维码 -->
+<div class="modal fade" id="myWechatCode" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title text-center" style="color: #000;">微信二维码</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row" >
+					<div class="col-sm-8 col-sm-offset-2">
+						<img width="100%;" src="../static/images/twocode.jpg" th:src="@{/images/twocode.jpg}">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/modal/jquery.waypoints.min.js" th:src="@{/modal/jquery.waypoints.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/js/client.min.js" th:src="@{/js/client.min.js}"></script>
+<script src="../static/js/jquery.cookie.min.js" th:src="@{/js/jquery.cookie.min.js}"></script>
+<script src="../static/js/geolocation.min.js" th:src="@{/js/geolocation.min.js}"></script>
+<script src="../static/js/my.locate.js" th:src="@{/js/my.locate.js}"></script>
+<script src="../static/js/leaveword.min.js" th:src="@{/js/leaveword.min.js}"></script>
+<script src="../static/comment/js/jquery.emoji.js" th:src="@{/comment/js/jquery.emoji.js}"></script>
+<script src="../static/comment/js/jquery.comment.min.js" th:src="@{/comment/js/jquery.comment.min.js}"></script>
+<script>
+
+</script>
+</body>
+</html>

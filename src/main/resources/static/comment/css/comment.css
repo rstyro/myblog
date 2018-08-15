@@ -1,0 +1,201 @@
+	a{
+		text-decoration: none;
+	}
+	.comment-container{
+		max-width: 1000px;
+		margin: 50px auto;
+		padding: 0px 10px;
+	}
+	.commentbox{
+		width: 100%;
+		padding-top: 5px;
+	}
+	
+	.myinput-group{
+		display: inline;
+		clear: both;
+	}
+	.myinput-group>label{
+		display:inline-block;
+		padding:5px 20px;
+		font-size: 1.1em;
+		background-color: #009688;
+		color: #fff;
+	}
+	.myinput-group>label a{
+		color: #fff;
+	}
+	.myinput-group>label a:HOVER{
+		color: #52f91e;
+	}
+	.myinput-group>input{
+		outline: none;
+		width: 200px;
+		height:34px;
+		color:#222;
+		font-size: 1.1em;
+		padding: 5px 10px;
+		vertical-align:top;
+	}
+	
+	.commentbox>textarea{
+		overflow: auto;
+		word-break: break-all;
+		width: 99%;
+		height: 100px;
+		resize: none;
+		outline:none;
+		border:1px solid #ccc;
+		border-radius: 5px;
+		background-color: #FCFCFC;
+		padding: 10px;
+		color: #111;
+	}
+	.commentbox>.send-box{
+		clear:both;
+		width: 100%;
+		height: 50px;
+	}
+	.commentbox>.send-box>a>i{
+		font-size: 2em;
+		color: #ccc;
+	}
+	.commentbox>.send-box>a>i:HOVER{
+		color: #3dfd0f;
+	}
+	.commentbox>.send-box>a.btn-send{
+		width: 60px;
+		height:35px;
+		line-height:33px;
+		text-align: center;
+		float: right;
+		background-color: #5DC0DF;
+		border-radius: 5px;
+		color: #fff;
+		margin-right: 1%;
+	}
+	.comment-list{
+		width: 100%;
+	}
+	.comment-list>.comment-list-box{
+		clear: both;
+		padding-bottom:20px;
+		padding-top:5px;
+		padding-left:5px;
+		margin-bottom:20px;
+		border-bottom: 1px solid #eee;
+		color:#fff;
+	}
+	
+	.comment-list>.comment-list-box>header{
+		position: relative;
+		width: 100%;
+		height: 50px;
+	}
+	.comment-list>.comment-list-box>header>.author-head{
+		width: 5%;
+		position: absolute;
+	}
+	.comment-list>.comment-list-box>header>.author-head img{
+		width: 100%;
+		border-radius: 50%;
+	}
+	.comment-list>.comment-list-box>header>.author-info{
+		padding-left:6%;
+	}
+	.comment-list>.comment-list-box>header>.author-info>a{
+		text-decoration: none;
+		color: #fff;
+		font-size:1.1em;
+		font-weight: bold;
+	}
+	.comment-list>.comment-list-box>header>.author-info>.authore-info-footer span{
+		display: inline-block;
+		margin-right: 10px;
+		color: #969696;
+	}
+	.comment-list>.comment-list-box>p.content{
+		padding:1em 0px 0px 0px; 
+	}
+	.comment-list>.comment-list-box>footer{
+		padding: 5px 0px;
+	}
+	.comment-list>.comment-list-box>footer>span{
+		color: #969696;
+		display: inline-block;
+		margin-right: 10px;
+	}
+	.comment-list>.comment-list-box>footer>span:HOVER{
+		color: #fff;
+	}
+	.comment-list>.comment-list-box>footer>span>i.fa-globe{
+		color: green;
+	}
+	.comment-list>.comment-list-box>footer>span>i.fa-desktop{
+		color: #b5b2b2;
+	}
+	.comment-list>.comment-list-box>footer>a{
+		text-decoration: none;
+		color: #969696;
+		display: inline-block;
+		margin-right: 10px;
+		float: right;
+	}
+	i{
+		padding-right: 5px;
+	}
+	.comment-list>.comment-list-box>footer>a:HOVER>i.fa-thumbs-o-up{
+		color: red;
+	}
+	.comment-list>.comment-list-box>footer>a:HOVER>i.fa-mail-reply,.comment-list>.comment-list-box>footer>a:HOVER>span{
+		color: #fff;
+	}
+	.comment-list>.comment-list-box>.child-comment-list{
+		border-left: 3px solid #ccc;
+		padding-left: 5px;
+		margin-top: 0.5em;
+		background-color: rgba(255,255,255,0.1);
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment{
+		border-bottom: 1px dashed #ccc;
+		padding-bottom: 10px;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>p{
+		padding: 0px;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>p>a{
+		text-decoration: none;
+		color: #3194D0;
+		padding: 0px 5px 0px 0px;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>footer{
+		color: #969696;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>footer>span{
+		display: inline-block;
+		margin-right: 10px;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>footer>a{
+		text-decoration: none;
+		color: #969696;
+	}
+	.comment-list>.comment-list-box>.child-comment-list>.child-comment>footer>a:HOVER{
+		color: #fff;
+	}
+	.red{
+		color: red;
+	}
+	
+
+@media screen and (max-width: 767px) {
+	.comment-list>.comment-list-box>header>.author-info>.authore-info-footer span:nth-child(3),.comment-list>.comment-list-box>footer>span:nth-child(2){
+		display: none;
+	}
+	.comment-list>.comment-list-box>header>.author-head{
+		width: 15%;
+		position: absolute;
+	}
+	.comment-list>.comment-list-box>header>.author-info{
+		padding-left:17%;
+	}
+}

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}">这个冬天不太冷的博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="keywords" content="这个冬天不太冷,个人博客,个人网站,文章,帅大叔" />
+<meta name="description" th:attr="content = ${description}" content="帅大叔的博客,这个冬天不太冷的个人博客,闲时写写文章,分享技术干货,顺便做笔记,主要学JAVA" />
+<meta name="_ctx" th:content="@{/}" />
+<link rel="shortcut icon" type="image/x-icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+<link rel="stylesheet" href="../static/editormd/css/editormd.min.css" th:href="@{/editormd/css/editormd.css}"/>
+<link href="../static/css/blog.core.min.css" rel="stylesheet" th:href="@{/css/blog.core.css}">
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<link href="../static/comment/css/comment.css" rel="stylesheet" th:href="@{/comment/css/comment.css}">
+<link href="../static/comment/css/emoji.css" rel="stylesheet" th:href="@{/comment/css/emoji.css}">
+<link href="../static/fontawesome/css/font-awesome.min.css" th:href="@{/fontawesome/css/font-awesome.min.css}"  rel="stylesheet">
+<link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+<link href="../static/modal/css/modal.min.css" th:href="@{/modal/css/modal.min.css}" rel="stylesheet">
+<link href="../static/tocTree/css/zTreeStyle.min.css" rel="stylesheet" th:href="@{/tocTree/css/zTreeStyle.css}">
+<link href="../static/css/emoji.min.css" rel="stylesheet" th:href="@{/css/emoji.min.css}">
+<!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<style type="text/css">
+	#comment-head{
+		font-size: 1.5em;
+		margin-top: 50px;
+	}
+	#pageText{
+		font-size: 1.5em;
+		color: #fff;
+	}
+	#pageText:HOVER{
+		color: #009688;
+	}
+</style>
+
+</head>
+<body>
+<!-- 
+ <div id="loading" th:fragment="loadingpage">
+	<p id="beatText">正在加载中...</p>
+</div>
+ -->
+	<div id="fh5co-page">
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+		<div th:replace="include/left :: blog-left"></div>
+		
+		<!-- MAIN -->
+		<div id="fh5co-main">
+			<div class="fh5co-narrow-content">
+			<!-- 为了判断用户是否登陆 -->
+				<input type="hidden" id="user_id" value="0" th:if="${not #lists.isEmpty(session.SESSION_USER)}" th:value="${session.SESSION_USER.user_id}" />
+				<input type="hidden" id="user_id" value="0" th:if="${#lists.isEmpty(session.SESSION_USER)}" />
+				<input type="hidden" id="author_id" value="0" th:value="${article.user_id}"/>
+				<h2 style="display: inline;padding-right: 20px;">博客 </h2> <small>人生并不像火车要通过每个站似的经过每一个生活阶段。人生总是直向前行走，从不留下什么..............</small>
+				<div id="lrs-blog-main">
+					<div id="lrs-blog-main-left" >
+						<div class='detail-head'>
+							<div class="detail-head-info">
+								<h2 th:text="${article.title}">帅大叔</h2>
+								<div class="row">
+									<div class="col-md-5">
+										<div class="col-md-9">
+											<span>标签:</span>
+											<span th:unless=${#lists.isEmpty(article.labels)} th:each="label:${article.labels}" th:text="${label.label_name}">java</span>
+										</div>
+										<div class="col-md-3" th:if="${not #lists.isEmpty(session.SESSION_USER)}">
+											<span th:if="${session.SESSION_USER.user_id} == ${article.user_id}"><a href="#" th:href="@{/atc/update/{id}(id=${article.article_id})}">编辑</a></span>
+											<span th:if="${session.SESSION_USER.user_id} == ${article.user_id}"><a href="#" th:href="@{/atc/del/{id}(id=${article.article_id})}">删除</a></span>
+										</div>
+									</div>
+									<div class="col-md-7">
+											<div class="col-md-5">
+												<span th:text="${article.create_time}">2017-12-12 12:21:20</span> 
+											</div>
+											<div class="col-md-3">
+												<span><strong th:text="${article.browse_num}">111</strong>人围观</span> 
+											</div>
+											<div class="col-md-2">
+												<span><strong th:text="${article.comment_num}">111</strong>人吐槽</span>
+											</div>
+											<div class="col-md-2">
+												<span><strong th:text="${article.praise_num}">111</strong>人赞同</span> 
+											</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="markdownView" class="editormd-preview-theme" >
+							<textarea name="content" style="display:none;" th:text="${article.content}">
+							
+							</textarea>
+							
+						</div>
+						
+						<div class="detail-footer">
+							<div class="copyright">
+								<p><strong>版权声明: 博主水平有限，不对之处，请见谅，转载请注明出处，谢谢合作 ^_^</strong></p>
+								<div id="blog-footer-share">
+									<strong>分享文章:</strong>
+									<div class="bdsharebuttonbox" id="share-list">
+										<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+										<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+										<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+										<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ"></a>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12 col-sm-12 col-md-12 last-atc">
+									<strong>上一篇:</strong><a href="javascript:void(0)" th:href="@{/atc/show/{id}(id=${lArticle.article_id})}" th:text="${lArticle.title}">Linux 安装mysql 服务</a>
+								</div>
+								<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
+									<div class="row">
+										<div class="col-xs-6 col-sm-6 col-md-6">
+											<a id="praise" th:attr="aid=${article.article_id}" href="javascript:void(0)">
+												<i th:if="${article.praise_flag == 0}" class="fa fa-heart-o"></i>
+												<i th:unless="${article.praise_flag == 0}" class="fa fa-heart"></i>
+												&nbsp;&nbsp;<span>求赞</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="num" th:text="${article.praise_num}"> 1</span>
+											</a>
+										</div>
+										
+										<div class="col-xs-6 col-sm-6 col-md-6">
+											<a id="reward" href="javascript:void(0)">
+												<i class="fa fa-rmb"></i>&nbsp;&nbsp;<span>求赏</span>
+											</a>
+										</div>
+									</div>
+									
+								</div>
+								<div class="col-lg-12 col-md-12 col-sm-12 next-atc">
+									<strong>下一篇:</strong><a href="javascript:void(0)" th:href="@{/atc/show/{id}(id=${nArticle.article_id})}" th:text="${nArticle.title}">Linux 安装mysql 服务</a>
+								</div>
+							</div>
+							<div>
+								<div id="comment-head"><i class="fa fa-commenting-o"></i> 发表评论</div>
+								<div class="leaveword-box">
+									<div class="myinput-group">
+										<label th:if="${not #lists.isEmpty(session.SESSION_USER)}" >昵称:</label><input type="text" name="nick_name" value="" th:if="${not #lists.isEmpty(session.SESSION_USER)}" th:value="${session.SESSION_USER.name}" placeholder="可选，写你喜欢的昵称"/>
+										<label th:if="${#lists.isEmpty(session.SESSION_USER)}" >昵称:</label><input type="text" name="nick_name" value="" th:if="${#lists.isEmpty(session.SESSION_USER)}" placeholder="可选，写你喜欢的昵称"/>
+										<label>邮箱:</label><input type="text" name="email" value="" placeholder="可选，调入你的邮箱"/>
+										<label><a href="javascript:void(0)" id="qqthird"><img src="../static/images/qq.png" th:src="@{/images/qq.png}"> QQ登陆</a></label>
+									</div>
+									<div class="commentbox">
+										<textarea cols="80" rows="50" placeholder="来说几句吧......" class="mytextarea" id="content"></textarea>
+										<div class="send-box">
+											<a href="javascript:void(0)" class="smile"><i class="fa fa-smile-o"></i></a>
+											<a href="javascript:void(0)" class="btn-send" uid="1">发送</a>
+										</div>
+									</div>
+								</div>
+								
+								<div>
+									<div class="comment-list">
+				
+									</div>
+									<a href="javascript:void(0)" id="pageText">没有更多了...</a>
+								</div>
+							</div>
+							
+						</div>				
+					</div>
+					<div id="lrs-blog-main-right" >
+						<div class="toc">
+							<h3><i class="fa fa-leaf"></i> 文章索引</h3>
+							<ul id="tree" class="ztree">
+							</ul>
+						</div>
+						 <div class="left-col">
+						 	<a class="col" href="#top">回到顶部</a>
+						 	<a class="col" href="#comment-head">立马吐槽</a>
+						 	<a class="col" href="javascript:void(0)" id="article-share">分享</a>
+						 	<div class="col bdsharebuttonbox" id="share-col">
+						 		<em></em><span></span>
+								<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+								<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+								<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+								<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ"></a>
+							</div>
+						 	<div class="col">
+						 		<div class="row">
+						 			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="white-skin">白天</div>
+						 			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="black-skin">夜晚</div>
+						 		</div>
+						 	</div>
+						 </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 为了获取表id -->
+		<input type="hidden" name="tid" id="tid" value="" th:value="${article.article_id}">
+		<!-- MAIN END -->
+	</div>
+	<!-- 打赏模态框 -->
+<div class="modal fade" id="rewardModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="modelHead">打赏</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row" style="text-align: center;font-weight: bold;font-size: 1.2em;">
+						<div class="col-sm-5">
+							<p >微信打赏</p>
+							<img src="../static/images/wechat.png" th:src="@{/images/wechat.png}">
+						</div>
+						<div class="col-sm-5 col-sm-offset-2">
+							<p>支付宝打赏</p>
+							<img src="../static/images/alipay.png" th:src="@{/images/alipay.png}">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+</div>	
+<!-- 微信二维码 -->
+<div class="modal fade" id="myWechatCode" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title text-center" style="color: #000;">微信二维码</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row" >
+					<div class="col-sm-8 col-sm-offset-2">
+						<img width="100%;" src="../static/images/twocode.jpg" th:src="@{/images/twocode.jpg}">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<p>评论成功</p>
+			</div>
+		</div>
+	</div>
+</div>
+	
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"分享帅大叔的博文","bdMini":"1","bdMiniList":["qzone","tsina","weixin","sqq","fbook","h163"],"bdPic":"http://www.lrshuai.top/upload/user/20170612/05976238.png","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/editormd/lib/marked.min.js" th:src="@{/editormd/lib/marked.min.js}"></script>
+<script src="../static/editormd/lib/prettify.min.js" th:src="@{/editormd/lib/prettify.min.js}"></script>
+<script src="../static/editormd/lib/raphael.min.js" th:src="@{/editormd/lib/raphael.min.js}"></script>
+<script src="../static/editormd/lib/underscore.min.js" th:src="@{/editormd/lib/underscore.min.js}"></script>
+<script src="../static/editormd/lib/sequence-diagram.min.js" th:src="@{/editormd/lib/sequence-diagram.min.js}"></script>
+<script src="../static/editormd/lib/flowchart.min.js" th:src="@{/editormd/lib/flowchart.min.js}"></script>
+<script src="../static/editormd/lib/jquery.flowchart.min.js" th:src="@{/editormd/lib/jquery.flowchart.min.js}"></script>
+
+<script src="../static/editormd/editormd.min.js" th:src="@{/editormd/editormd.min.js}"></script>
+<script src="../static/tocTree/js/jquery.ztree.core-3.5.min.js" th:src="@{/tocTree/js/jquery.ztree.core-3.5.min.js}"></script>
+<script src="../static/tocTree/js/ztree_toc.min.js" th:src="@{/tocTree/js/ztree_toc.min.js}"></script>
+<script src="../static/js/jquery.cookie.min.js" th:src="@{/js/jquery.cookie.min.js}"></script>
+<script src="../static/face/js/jquery.qqFace.min.js" th:src="@{/face/js/jquery.qqFace.js}"></script>
+<script src="../static/js/client.min.js" th:src="@{/js/client.min.js}"></script>
+<script src="../static/js/geolocation.min.js" th:src="@{/js/geolocation.min.js}"></script>
+<script src="../static/js/my.locate.js" th:src="@{/js/my.locate.js}"></script>
+<script src="../static/comment/js/jquery.emoji.js" th:src="@{/comment/js/jquery.emoji.min.js}"></script>
+<script src="../static/comment/js/jquery.comment.js" th:src="@{/comment/js/jquery.comment.min.js}"></script>
+<script src="../static/js/blog.detail.min.js" th:src="@{/js/blog.detail.min.js}"></script>
+<script type="text/javascript">
+var _ctx = $("meta[name='_ctx']").attr("content");
+_ctx = _ctx.substr(0, _ctx.length - 1);
+$(function(){
+	$(window).scroll(function() {
+		var scrollH  = $(window).scrollTop();
+		var topH = 60-scrollH;
+		topH = topH < 0 ? 10:topH;
+		$(".toc").css("top",topH+"px");
+	});
+	
+	$("#article-share").click(function(){
+		$("#share-col").toggle("slow");
+	});
+})
+</script>
+</body>
+</html>

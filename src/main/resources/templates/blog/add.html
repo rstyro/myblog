@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>写文章</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<meta name="_ctx" th:content="@{/}" />
+<link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" href="../static/editormd/css/editormd.min.css" th:href="@{/editormd/css/editormd.css}"/>
+<link rel="stylesheet" href="../static/css/checkbox.min.css" th:href="@{/css/checkbox.min.css}"/>
+<link rel="shortcut icon" type="image/x-icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}">
+<style>
+	input[type='text']{
+		width: 92%;
+		height: 45px;
+		font-size: 30px;
+		border: 0px;
+		padding-left: 20px;
+	}
+	#submit{
+		width: 8%;
+	}
+	.checkbox{
+		margin: 0px auto;
+	}
+	.checkbox .label-checkbox{
+		float:left;
+		padding-right: 2em;
+	}
+	.checkbox .label-checkbox h4{
+		font-size: 1.2em;
+		font-weight: bold;
+		text-align: center;
+	}
+	
+</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<form th:action="${#httpServletRequest.getContextPath()}+${action}" action="/atc/save" method="post">
+		    <div>
+		    	<span th:if="${#lists.isEmpty(article)}">
+			    	<input type="text" name="title"  value="" placeholder="文章标题" />
+		    	</span>
+		    	<span th:unless="${#lists.isEmpty(article)}">
+			    	<input type="text" name="title" th:value="${article.title}" value="" placeholder="文章标题" />
+			   		<input type="hidden" name="article_id" th:value="${article.article_id}" value="" />
+		    	</span>
+		    	<button class="btn btn-info btn-lg pull-right" th:text="${btntext}" id="submit" >发布文章</button>
+		    	<input type="hidden" name="token" value="" />
+		    	<input type="hidden" name="ids" value="" />
+		    </div>
+		    <div class="editormd" id="test-editormd">
+		    	<textarea class="editormd-markdown-textarea" name="content" id="editormd" th:if="${#lists.isEmpty(article)}"></textarea>
+		    	<textarea class="editormd-markdown-textarea" name="content" id="editormd" th:unless="${#lists.isEmpty(article)}" th:text="${article.content}"></textarea>
+		   		<!-- 第二个隐藏文本域，用来构造生成的HTML代码，方便表单POST提交，这里的name可以任意取，后台接受时以这个name键为准 -->
+		   		<!-- html textarea 需要开启配置项 saveHTMLToTextarea == true -->
+		   		<textarea class="editormd-html-textarea" name="text" id="editorhtml"></textarea>       
+		   		<textarea class="editormd-html-textarea" name="html_content"></textarea>       
+		    </div>
+		<div class="checkbox">
+			<div class="label-checkbox" th:each="label:${labels}">
+				<h4 th:text="${label.label_name}">Java</h4> 
+				<input th:if="${label.ischecked == 'true'}" class='tgl tgl-flip' checked="checked" id="label_id" name="labels" th:attr="id=${label.label_id}" th:value="${label.label_id}" value="label_id" type='checkbox'>
+				<input th:if="${label.ischecked == 'false'}" class='tgl tgl-flip' id="label_id" name="labels" th:attr="id=${label.label_id}" th:value="${label.label_id}" value="label_id" type='checkbox'>
+				<label class='tgl-btn' data-tg-off='不选' data-tg-on='选中' th:attr="for=${label.label_id}" for='label_id'></label>
+			</div>
+			
+		</div>
+		</form>
+	</div>	
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/editormd/editormd.min.js" th:src="@{/editormd/editormd.js}"></script>
+<script>
+var _ctx = $("meta[name='_ctx']").attr("content");
+_ctx = _ctx.substr(0, _ctx.length - 1);
+testEditor=$(function() {
+    editormd("test-editormd", {
+         width: "100%",
+         height: $(window).height()-100,
+         path : _ctx+"/editormd/lib/",
+         previewTheme : "dark",				//预览的主题
+         syncScrolling : true,				//这个看着意思是同步滑动。。。。false的时候，右边不显示了。。。。
+         codeFold : true,						//代码折叠 ?   选中 然后按快捷键 Ctrl + Q,好像设置成false也可以用.....不知道，知道求告知
+         saveHTMLToTextarea : true,   		// 保存 HTML 到 Textarea
+         searchReplace : true,
+         htmlDecode : true,   // 开启 HTML 标签解析，为了安全性，默认不开启    
+         emoji : true,				 // 表情
+         taskList : true,			 // 这个具体不知道,知道求告知
+         tocm            : true,       // Using [TOCM]
+         tex : true,                   // 开启科学公式TeX语言支持，默认关闭
+         flowChart : true,             // 开启流程图支持，默认关闭
+         sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
+         imageUpload : true,
+         imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp","PNG"],
+         imageUploadURL : _ctx+"/up/uploadImg",        	//上传地址
+         onload : function() {							//加载完后执行
+             console.log('onload', this);
+         }
+
+    });
+});
+//把html代码  变成文本，正则的意思是以 < 开头和 > 结尾的内容全部替换为空
+function delHTMLTag(htmlStr){
+    htmlStr = htmlStr.replace(/<[^>]+>/g,"");
+    return htmlStr;
+}
+var chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+function getRandomChars(n) {
+     var res = "";
+     for(var i = 0; i < n ; i ++) {
+         var id = Math.ceil(Math.random()*35);
+         res += chars[id];
+     }
+     return res;
+}
+$(function(){
+	$("#submit").click(function(){
+		if($("input[name='title']").val() == ""){
+			$("input[name='title']").focus();
+			return false;
+		}
+		var length = $("input[type='checkbox']:checked").length;
+		if(length == 0){
+			alert("至少选择一个标签");
+			return false;
+		}
+		if(length > 3){
+			alert("最多只能选择三个标签");
+			return false;
+		}
+		var mdhtml = $("#editorhtml").val();
+		$("#editorhtml").val(delHTMLTag(mdhtml));
+		$("input[name='token']").val(getRandomChars(8));
+	});
+})
+</script>
+</body>
+</html>
